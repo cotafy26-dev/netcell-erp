@@ -1,0 +1,64 @@
+import { useState, type FormEvent } from 'react';
+import { Navigate, useNavigate } from 'react-router-dom';
+import { useAuth } from '@/lib/auth';
+import { useTheme } from '@/lib/theme';
+import { Button, Card, CardContent, CardHeader, CardTitle, Input } from '@/components/ui';
+import { Moon, Sun } from 'lucide-react';
+
+export function Login() {
+  const { session, profile, signIn, loading } = useAuth();
+  const { theme, toggle } = useTheme();
+  const nav = useNavigate();
+  const [err, setErr] = useState<string | null>(null);
+  const [busy, setBusy] = useState(false);
+
+  if (!loading && session) {
+    return <Navigate to={profile?.role === 'CLIENTE' ? '/portal' : '/admin'} replace />;
+  }
+
+  async function onSubmit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setBusy(true);
+    setErr(null);
+    const fd = new FormData(e.currentTarget);
+    try {
+      await signIn(String(fd.get('email')), String(fd.get('password')));
+      nav('/admin');
+    } catch (e) {
+      setErr((e as Error).message);
+      setBusy(false);
+    }
+  }
+
+  return (
+    <main className="relative grid min-h-dvh place-items-center p-4">
+      <Button variant="ghost" size="icon" className="absolute right-4 top-4" onClick={toggle} aria-label="Tema">
+        {theme === 'dark' ? <Sun className="size-4" /> : <Moon className="size-4" />}
+      </Button>
+      <Card className="w-full max-w-sm animate-fade-in">
+        <CardHeader>
+          <div className="mb-2 font-display text-xl font-bold tracking-widest">
+            NETCELL <span className="text-accent">ERP</span>
+          </div>
+          <CardTitle>Entrar</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <form onSubmit={onSubmit} className="space-y-3">
+            <Input name="email" type="email" placeholder="E-mail" required autoComplete="username" />
+            <Input
+              name="password"
+              type="password"
+              placeholder="Senha"
+              required
+              autoComplete="current-password"
+            />
+            {err && <p className="text-sm text-accent">{err}</p>}
+            <Button type="submit" className="w-full" loading={busy}>
+              Entrar
+            </Button>
+          </form>
+        </CardContent>
+      </Card>
+    </main>
+  );
+}
