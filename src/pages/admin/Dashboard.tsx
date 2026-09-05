@@ -7,6 +7,8 @@ import { brl } from '@/lib/utils';
 interface Summary {
   revenueMonth: number;
   expensesMonth: number;
+  receivablePending: number;
+  receivableOverdue: number;
   activeContracts: number;
   expiringContracts: number;
   openServiceOrders: number;
@@ -30,6 +32,14 @@ async function sum(table: string, col: string, apply: (q: any) => any) {
   return (data ?? []).reduce((s, r) => s + Number(r[col] ?? 0), 0);
 }
 
+/** Soma o que ainda falta receber/pagar (amount - paidAmount) das linhas filtradas. */
+async function sumOutstanding(apply: (q: any) => any) {
+  const { data } = (await apply(supabase.from('FinancialEntry').select('amount, paidAmount'))) as {
+    data: { amount: number; paidAmount: number }[] | null;
+  };
+  return (data ?? []).reduce((s, r) => s + (Number(r.amount ?? 0) - Number(r.paidAmount ?? 0)), 0);
+}
+
 export function Dashboard() {
   const [s, setS] = useState<Summary | null>(null);
   const [err, setErr] = useState<string | null>(null);
@@ -44,6 +54,8 @@ export function Dashboard() {
         const [
           revenueMonth,
           expensesMonth,
+          receivablePending,
+          receivableOverdue,
           activeContracts,
           expiringContracts,
           openServiceOrders,
@@ -59,6 +71,10 @@ export function Dashboard() {
           sum('FinancialEntry', 'paidAmount', (q) =>
             q.eq('type', 'PAGAR').eq('status', 'PAGO').gte('paidAt', monthStart),
           ),
+          sumOutstanding((q) => q.eq('type', 'RECEBER').in('status', ['PENDENTE', 'PARCIAL', 'ATRASADO'])),
+          sumOutstanding((q) =>
+            q.eq('type', 'RECEBER').in('status', ['PENDENTE', 'PARCIAL', 'ATRASADO']).lt('dueDate', now.toISOString()),
+          ),
           count('Contract', (q) => q.eq('status', 'ATIVO')),
           count('Contract', (q) => q.eq('status', 'ATIVO').lte('endDate', in30).gte('endDate', now.toISOString())),
           count('ServiceOrder', (q) => q.in('status', ['ABERTA', 'EM_EXECUCAO', 'PAUSADA'])),
@@ -66,13 +82,15 @@ export function Dashboard() {
           count('Equipment', (q) => q.eq('status', 'DISPONIVEL')),
           count('Customer', (q) => q.gte('createdAt', monthStart)),
           count('FinancialEntry', (q) =>
-            q.eq('type', 'RECEBER').in('status', ['PENDENTE', 'ATRASADO']).lt('dueDate', now.toISOString()),
+            q.eq('type', 'RECEBER').in('status', ['PENDENTE', 'PARCIAL', 'ATRASADO']).lt('dueDate', now.toISOString()),
           ),
           count('Invoice', (q) => q.eq('status', 'aberta')),
         ]);
         setS({
           revenueMonth,
           expensesMonth,
+          receivablePending,
+          receivableOverdue,
           activeContracts,
           expiringContracts,
           openServiceOrders,
@@ -92,7 +110,9 @@ export function Dashboard() {
   if (!s) return <Spinner />;
 
   const kpis: [string, string, React.ElementType][] = [
-    ['Receita do mês', brl(s.revenueMonth), Wallet],
+    ['A receber (em aberto)', brl(s.receivablePending), Wallet],
+    ['Atrasado', brl(s.receivableOverdue), TriangleAlert],
+    ['Recebido no mês', brl(s.revenueMonth), Wallet],
     ['Despesas do mês', brl(s.expensesMonth), Wallet],
     ['Lucro do mês', brl(s.revenueMonth - s.expensesMonth), Wallet],
     ['Contas a receber vencidas', String(s.overdueEntries), TriangleAlert],
