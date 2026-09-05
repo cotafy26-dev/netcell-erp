@@ -2,6 +2,7 @@ import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { AuthProvider } from '@/lib/auth';
 import { ThemeProvider } from '@/lib/theme';
 import { AdminLayout, PortalLayout, RequireAuth } from '@/components/layout';
+import { Home } from '@/pages/Home';
 import { Login } from '@/pages/Login';
 import { Portal } from '@/pages/Portal';
 import { Dashboard } from '@/pages/admin/Dashboard';
@@ -11,10 +12,9 @@ import { Estoque, EstoqueItem } from '@/pages/admin/Estoque';
 import { OrdensServico, OSForm, OSDetail } from '@/pages/admin/OrdensServico';
 
 /**
- * Este app não tem página de vendas própria — quem vende é o site
- * institucional (netcellinformatica.com.br). Aqui, "/" é só a porta de
- * entrada: manda direto pro login. Cliente e admin entram pelo mesmo lugar;
- * o Login já redireciona cada um pro seu destino (/portal ou /admin).
+ * "/" mostra a página de entrada (pitch curto + botão Entrar), que leva ao
+ * login. De lá, cliente e admin são levados cada um pro seu destino
+ * (/portal ou /admin) conforme o papel do usuário logado.
  */
 export default function App() {
   return (
@@ -22,7 +22,7 @@ export default function App() {
       <BrowserRouter>
         <AuthProvider>
           <Routes>
-            <Route path="/" element={<Navigate to="/login" replace />} />
+            <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
 
             <Route element={<RequireAuth staffOnly />}>
@@ -46,7 +46,7 @@ export default function App() {
               </Route>
             </Route>
 
-            <Route path="*" element={<Navigate to="/login" replace />} />
+            <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </AuthProvider>
       </BrowserRouter>
