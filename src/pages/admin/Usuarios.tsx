@@ -8,6 +8,7 @@ import { ROLES, hasPermission, type Role } from '@/shared';
 import { PageHeader, Pagination, SearchBar } from '@/components/list';
 import { Badge, Button, Card, CardContent, CardHeader, CardTitle, Input, Select, Spinner } from '@/components/ui';
 import { formatDate } from '@/lib/utils';
+import { applyMask } from '@/lib/masks';
 
 type Row = { id: string; name: string; email: string | null; role: Role; is_active: boolean; created_at: string };
 
@@ -103,7 +104,7 @@ export function UsuarioForm() {
       <form onSubmit={onSubmit} className="space-y-4">
         <div className="flex flex-col gap-1.5">
           <label className="text-sm font-medium">Nome *</label>
-          <Input value={name} onChange={(e) => setName(e.target.value)} required />
+          <Input value={name} onChange={(e) => setName(applyMask('name', e.target.value))} required />
         </div>
         <div className="flex flex-col gap-1.5">
           <label className="text-sm font-medium">E-mail *</label>
@@ -252,7 +253,7 @@ export function UsuarioEdit() {
       <form onSubmit={salvar} className="space-y-4">
         <div className="flex flex-col gap-1.5">
           <label className="text-sm font-medium">Nome</label>
-          <Input value={name} onChange={(e) => setName(e.target.value)} disabled={!canWrite} required />
+          <Input value={name} onChange={(e) => setName(applyMask('name', e.target.value))} disabled={!canWrite} required />
         </div>
         <div className="flex flex-col gap-1.5">
           <label className="text-sm font-medium">Papel</label>
