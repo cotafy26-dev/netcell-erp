@@ -74,6 +74,11 @@ export function DocumentView({ title, html }: { title: string; html: string }) {
         .doc-paper .sig-label{ display:block; margin-top:4px; font-size:11px; color:#666 }
         .doc-paper .local-data{ margin-top:24px }
 
+        @media (max-width: 640px){
+          .doc-paper{ padding: 20px 16px; font-size: 13px }
+          .doc-paper table.parties td, .doc-paper table.parties th{ display:block; width:100% }
+        }
+
         @media print{
           body *{ visibility:hidden }
           #doc-print-area, #doc-print-area *{ visibility:visible }
