@@ -3,6 +3,28 @@ import ReactDOM from 'react-dom/client';
 import App from './App';
 import './index.css';
 
+// Remove qualquer service worker antigo (versões anteriores registravam um
+// que, preso no aparelho, deixava a tela preta). Sem SW: o "Instalar app"
+// continua funcionando pelo próprio navegador.
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker
+    .getRegistrations()
+    .then((regs) => {
+      const had = regs.length > 0;
+      regs.forEach((r) => r.unregister());
+      if ('caches' in window) caches.keys().then((ks) => ks.forEach((k) => caches.delete(k))).catch(() => {});
+      try {
+        if (had && !sessionStorage.getItem('sw-limpo')) {
+          sessionStorage.setItem('sw-limpo', '1');
+          location.reload();
+        }
+      } catch {
+        /* sessionStorage indisponível — sem reload, tudo bem */
+      }
+    })
+    .catch(() => {});
+}
+
 const root = document.getElementById('root')!;
 
 const url = import.meta.env.VITE_SUPABASE_URL;
@@ -29,10 +51,4 @@ if (!url || !anon) {
       <App />
     </React.StrictMode>,
   );
-
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker.register('/sw.js').catch(() => {});
-    });
-  }
 }
