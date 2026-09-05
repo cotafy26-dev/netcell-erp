@@ -2,8 +2,9 @@ import { useState, type FormEvent } from 'react';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/lib/auth';
 import { useTheme } from '@/lib/theme';
+import { useInstalarApp } from '@/hooks/useInstalarApp';
 import { Button, Card, CardContent, CardHeader, CardTitle, Input } from '@/components/ui';
-import { Moon, Sun } from 'lucide-react';
+import { Download, Moon, Sun } from 'lucide-react';
 
 export function Login() {
   const { session, profile, signIn, loading } = useAuth();
@@ -15,6 +16,8 @@ export function Login() {
   if (!loading && session) {
     return <Navigate to={profile?.role === 'CLIENTE' ? '/portal' : '/admin'} replace />;
   }
+
+  const { podeInstalar, mostrarDicaIOS, instalado, instalar } = useInstalarApp();
 
   async function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -57,6 +60,20 @@ export function Login() {
               Entrar
             </Button>
           </form>
+
+          {!instalado && (podeInstalar || mostrarDicaIOS) && (
+            <Button
+              variant="outline"
+              className="mt-3 w-full"
+              onClick={() =>
+                podeInstalar
+                  ? instalar()
+                  : alert('Para instalar: toque no botão Compartilhar do Safari e escolha "Adicionar à Tela de Início".')
+              }
+            >
+              <Download className="size-4" /> Instalar app no aparelho
+            </Button>
+          )}
         </CardContent>
       </Card>
     </main>

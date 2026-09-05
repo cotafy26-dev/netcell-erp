@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
 import { NavLink, useNavigate, useLocation, Navigate, Outlet } from 'react-router-dom';
 import * as Icons from 'lucide-react';
-import { LogOut, Menu, Moon, Sun, X } from 'lucide-react';
+import { Download, LogOut, Menu, Moon, Sun, X } from 'lucide-react';
 import { ERP_MODULES, hasPermission } from '@/shared';
 import { useAuth } from '@/lib/auth';
 import { useTheme } from '@/lib/theme';
+import { useInstalarApp } from '@/hooks/useInstalarApp';
 import { Button, Spinner } from './ui';
 import { cn } from '@/lib/utils';
 
@@ -17,6 +18,35 @@ function ThemeToggle() {
       {theme === 'dark' ? <Sun className="size-4" /> : <Moon className="size-4" />}
     </Button>
   );
+}
+
+function BotaoInstalar() {
+  const { podeInstalar, mostrarDicaIOS, instalado, instalar } = useInstalarApp();
+  if (instalado) return null;
+
+  if (podeInstalar) {
+    return (
+      <Button variant="outline" size="sm" onClick={instalar}>
+        <Download className="size-4" />
+        <span className="hidden sm:inline">Instalar app</span>
+      </Button>
+    );
+  }
+  if (mostrarDicaIOS) {
+    return (
+      <Button
+        variant="outline"
+        size="sm"
+        onClick={() =>
+          alert('Para instalar: toque no botão Compartilhar do Safari e escolha "Adicionar à Tela de Início".')
+        }
+      >
+        <Download className="size-4" />
+        <span className="hidden sm:inline">Instalar app</span>
+      </Button>
+    );
+  }
+  return null;
 }
 
 function LogoHeader({ onClose }: { onClose?: () => void }) {
@@ -116,6 +146,7 @@ function Topbar({ onMenu }: { onMenu?: () => void }) {
         </div>
       </div>
       <div className="flex shrink-0 items-center gap-1">
+        <BotaoInstalar />
         <ThemeToggle />
         <Button
           variant="ghost"

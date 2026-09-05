@@ -1,0 +1,16 @@
+{
+  "name": "NetCell Informática — ERP",
+  "short_name": "NetCell ERP",
+  "description": "Gestão da NetCell Informática — clientes, contratos, propostas, equipamentos e financeiro.",
+  "start_url": "/login",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#ffffff",
+  "theme_color": "#0b0b0b",
+  "lang": "pt-BR",
+  "icons": [
+    { "src": "/icon.svg", "sizes": "192x192", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "/icon.svg", "sizes": "512x512", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}
