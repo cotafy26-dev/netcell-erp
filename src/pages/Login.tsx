@@ -10,14 +10,13 @@ export function Login() {
   const { session, profile, signIn, loading } = useAuth();
   const { theme, toggle } = useTheme();
   const nav = useNavigate();
+  const { podeInstalar, mostrarDicaIOS, instalado, instalar } = useInstalarApp();
   const [err, setErr] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
 
   if (!loading && session) {
     return <Navigate to={profile?.role === 'CLIENTE' ? '/portal' : '/admin'} replace />;
   }
-
-  const { podeInstalar, mostrarDicaIOS, instalado, instalar } = useInstalarApp();
 
   async function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
