@@ -10,7 +10,7 @@ import {
   Badge, Button, Card, CardContent, CardHeader, CardTitle, Input, Select, Spinner, Textarea,
   Table, TBody, TD, TH, THead, TR,
 } from '@/components/ui';
-import { brl } from '@/lib/utils';
+import { brl, parseBRDate } from '@/lib/utils';
 
 const PROPOSAL_STATUS = ['rascunho', 'enviada', 'aceita', 'recusada'];
 const STATUS_STYLE: Record<string, string> = {
@@ -136,12 +136,26 @@ export function PropostaForm() {
         templateId: template.id,
         customerId: customer.id,
         title: `Proposta — ${customer.name}`,
-        status: 'rascunho',
+        status: 'enviada',
         total: Number(valorTotal || 0),
         bodyHtml: firstPass,
       });
       const finalHtml = renderTemplate(template.bodyHtml, { ...values, numero: created.number });
       await updateRow('Proposal', created.id, { bodyHtml: finalHtml });
+
+      const valor = Number(valorTotal || 0);
+      if (valor > 0) {
+        await insertRow('FinancialEntry', {
+          type: 'RECEBER',
+          status: 'PENDENTE',
+          description: `Proposta ${created.number} — ${customer.name}`,
+          amount: valor,
+          dueDate: (parseBRDate(values.data_servico) ?? new Date()).toISOString(),
+          customerId: customer.id,
+          proposalId: created.id,
+        });
+      }
+
       nav(`/admin/propostas/${created.id}`);
     } catch (e) {
       setErr((e as Error).message);
@@ -278,11 +292,18 @@ export function PropostaView() {
         templateId,
         customerId: doc.customerId,
         title: `Locação — ${doc.Customer?.name ?? ''}`,
-        status: 'RASCUNHO',
+        status: 'AGUARDANDO_ASSINATURA',
         value: Number(doc.total || 0),
         bodyHtml: `<p>Gerado a partir da proposta ${doc.number}. Edite o contrato para completar os dados.</p>`,
       });
       await updateRow('Proposal', doc.id, { status: 'aceita' });
+
+      // Transfere o lançamento financeiro da proposta pro contrato, em vez de duplicar.
+      const entry = await supabase.from('FinancialEntry').select('id').eq('proposalId', doc.id).maybeSingle();
+      if (entry.data) {
+        await updateRow('FinancialEntry', entry.data.id, { contractId: created.id });
+      }
+
       nav(`/admin/contratos/${created.id}`);
     } catch (e) {
       alert((e as Error).message);

@@ -10,7 +10,7 @@ import {
   Badge, Button, Card, CardContent, CardHeader, CardTitle, Input, Select, Spinner, Textarea,
   Table, TBody, TD, TH, THead, TR,
 } from '@/components/ui';
-import { brl, formatDate } from '@/lib/utils';
+import { brl, formatDate, parseBRDate } from '@/lib/utils';
 
 const CONTRACT_STATUS = ['RASCUNHO', 'AGUARDANDO_ASSINATURA', 'ATIVO', 'SUSPENSO', 'ENCERRADO', 'CANCELADO'];
 const STATUS_STYLE: Record<string, string> = {
@@ -139,12 +139,26 @@ export function ContratoForm() {
         templateId: template.id,
         customerId: customer.id,
         title: `Locação — ${customer.name}`,
-        status: 'RASCUNHO',
+        status: 'AGUARDANDO_ASSINATURA',
         value: Number(valorTotal || 0),
         bodyHtml: firstPass,
       });
       const finalHtml = renderTemplate(template.bodyHtml, { ...values, numero: created.number });
       await updateRow('Contract', created.id, { bodyHtml: finalHtml });
+
+      const valor = Number(valorTotal || 0);
+      if (valor > 0) {
+        await insertRow('FinancialEntry', {
+          type: 'RECEBER',
+          status: 'PENDENTE',
+          description: `Contrato ${created.number} — ${customer.name}`,
+          amount: valor,
+          dueDate: (parseBRDate(values.data_inicio) ?? new Date()).toISOString(),
+          customerId: customer.id,
+          contractId: created.id,
+        });
+      }
+
       nav(`/admin/contratos/${created.id}`);
     } catch (e) {
       setErr((e as Error).message);
