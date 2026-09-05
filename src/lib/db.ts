@@ -33,7 +33,9 @@ export async function listPaged<T = Record<string, unknown>>(p: ListParams): Pro
     .order(p.orderBy ?? 'createdAt', { ascending: p.ascending ?? false })
     .range(from, to);
 
-  for (const [col, val] of p.filters ?? []) q = q.eq(col, val as never);
+  for (const [col, val] of p.filters ?? []) {
+    q = val === null ? q.is(col, null) : q.eq(col, val as never);
+  }
 
   if (p.search && p.searchColumns?.length) {
     const term = p.search.replace(/[%,()]/g, ' ').trim();
