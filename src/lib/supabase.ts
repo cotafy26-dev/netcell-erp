@@ -25,3 +25,15 @@ export function unwrap<T>({ data, error }: { data: T; error: { message: string }
   if (error) throw new Error(error.message);
   return data;
 }
+
+/**
+ * Cliente descartável (sem persistir sessão) usado só para criar login de
+ * outro usuário via signUp() a partir da tela de Usuários. Sem isso, o
+ * signUp trocaria a sessão salva no navegador para a do usuário recém-criado
+ * e derrubaria o admin que estava logado.
+ */
+export function createDisposableAuthClient() {
+  return createClient(url || 'https://placeholder.supabase.co', anon || 'placeholder', {
+    auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false },
+  });
+}

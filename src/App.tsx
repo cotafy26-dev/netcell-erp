@@ -11,6 +11,7 @@ import { Estoque, EstoqueItem } from '@/pages/admin/Estoque';
 import { OrdensServico, OSForm, OSDetail } from '@/pages/admin/OrdensServico';
 import { Contratos, ContratoForm, ContratoView } from '@/pages/admin/Contratos';
 import { Propostas, PropostaForm, PropostaView } from '@/pages/admin/Propostas';
+import { Usuarios, UsuarioForm, UsuarioEdit } from '@/pages/admin/Usuarios';
 
 /**
  * A página de vendas é o index.html estático (raiz do domínio) — não faz
@@ -45,6 +46,9 @@ export default function App() {
                 <Route path="propostas" element={<Propostas />} />
                 <Route path="propostas/novo" element={<PropostaForm />} />
                 <Route path="propostas/:id" element={<PropostaView />} />
+                <Route path="usuarios" element={<Usuarios />} />
+                <Route path="usuarios/novo" element={<UsuarioForm />} />
+                <Route path="usuarios/:id" element={<UsuarioEdit />} />
               </Route>
             </Route>
 

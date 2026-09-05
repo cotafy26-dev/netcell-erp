@@ -13,11 +13,12 @@ export interface ModuleDef {
 /**
  * Só entram aqui os módulos com tela funcional de verdade — a lista é o menu
  * do sistema, e item sem página por trás vira link morto. Os demais (CRM,
- * Locação, Financeiro, Notas Fiscais, Relatórios, Usuários, Integrações,
- * Configurações) voltam conforme forem construídos.
+ * Locação, Notas Fiscais, Relatórios, Integrações, Configurações) voltam
+ * conforme forem construídos.
  */
 export const ERP_MODULES: ModuleDef[] = [
   { key: 'dashboard', label: 'Dashboard', path: '/admin', icon: 'LayoutDashboard', resource: 'dashboard', group: 'Gestão' },
+  { key: 'users', label: 'Usuários', path: '/admin/usuarios', icon: 'UserCog', resource: 'users', group: 'Gestão' },
 
   { key: 'customers', label: 'Clientes', path: '/admin/clientes', icon: 'Users', resource: 'customers', group: 'Comercial' },
   { key: 'proposals', label: 'Proposta Comercial', path: '/admin/propostas', icon: 'FileText', resource: 'contracts', group: 'Comercial' },
