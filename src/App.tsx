@@ -3,6 +3,7 @@ import { AuthProvider } from '@/lib/auth';
 import { ThemeProvider } from '@/lib/theme';
 import { AdminLayout, PortalLayout, RequireAuth } from '@/components/layout';
 import { Login } from '@/pages/Login';
+import { RedefinirSenha } from '@/pages/RedefinirSenha';
 import { Portal } from '@/pages/Portal';
 import { Dashboard } from '@/pages/admin/Dashboard';
 import { Clientes, ClienteForm } from '@/pages/admin/Clientes';
@@ -28,6 +29,7 @@ export default function App() {
           <Routes>
             <Route path="/" element={<Navigate to="/login" replace />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/redefinir-senha" element={<RedefinirSenha />} />
 
             <Route element={<RequireAuth staffOnly />}>
               <Route path="/admin" element={<AdminLayout />}>

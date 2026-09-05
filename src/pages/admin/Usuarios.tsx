@@ -1,12 +1,12 @@
 import { useEffect, useState, type FormEvent } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import { createDisposableAuthClient } from '@/lib/supabase';
+import { createDisposableAuthClient, supabase } from '@/lib/supabase';
 import { getOne, updateRow } from '@/lib/db';
 import { usePagedList } from '@/lib/useList';
 import { useAuth } from '@/lib/auth';
 import { ROLES, hasPermission, type Role } from '@/shared';
 import { PageHeader, Pagination, SearchBar } from '@/components/list';
-import { Badge, Button, Card, CardContent, Input, Select, Spinner } from '@/components/ui';
+import { Badge, Button, Card, CardContent, CardHeader, CardTitle, Input, Select, Spinner } from '@/components/ui';
 import { formatDate } from '@/lib/utils';
 
 type Row = { id: string; name: string; email: string | null; role: Role; is_active: boolean; created_at: string };
@@ -154,6 +154,9 @@ export function UsuarioEdit() {
   const [role, setRole] = useState<Role>('TECNICO');
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState<string | null>(null);
+  const [novaSenha, setNovaSenha] = useState('');
+  const [pwBusy, setPwBusy] = useState(false);
+  const [pwMsg, setPwMsg] = useState<string | null>(null);
 
   useEffect(() => {
     getOne<Row>('profiles', id!).then((r) => {
@@ -189,6 +192,41 @@ export function UsuarioEdit() {
       setBusy(false);
     }
   }
+
+  async function alterarMinhaSenha(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setPwBusy(true);
+    setPwMsg(null);
+    try {
+      const { error } = await supabase.auth.updateUser({ password: novaSenha });
+      if (error) throw new Error(error.message);
+      setNovaSenha('');
+      setPwMsg('Senha alterada.');
+    } catch (e) {
+      setPwMsg((e as Error).message);
+    } finally {
+      setPwBusy(false);
+    }
+  }
+
+  async function enviarResetSenha() {
+    if (!row!.email) return setPwMsg('Este usuário não tem e-mail cadastrado.');
+    setPwBusy(true);
+    setPwMsg(null);
+    try {
+      const { error } = await supabase.auth.resetPasswordForEmail(row!.email, {
+        redirectTo: `${window.location.origin}/redefinir-senha`,
+      });
+      if (error) throw new Error(error.message);
+      setPwMsg(`E-mail de redefinição enviado para ${row!.email}.`);
+    } catch (e) {
+      setPwMsg((e as Error).message);
+    } finally {
+      setPwBusy(false);
+    }
+  }
+
+  const isSelf = me?.id === row.id;
 
   return (
     <div className="max-w-lg space-y-6">
@@ -239,6 +277,42 @@ export function UsuarioEdit() {
           </div>
         )}
       </form>
+
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-sm">Senha</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-3">
+          {isSelf ? (
+            <form onSubmit={alterarMinhaSenha} className="flex flex-wrap items-end gap-3">
+              <div className="flex flex-col gap-1.5">
+                <label className="text-sm font-medium">Nova senha</label>
+                <Input
+                  type="password"
+                  value={novaSenha}
+                  onChange={(e) => setNovaSenha(e.target.value)}
+                  minLength={6}
+                  required
+                  autoComplete="new-password"
+                />
+              </div>
+              <Button type="submit" loading={pwBusy}>
+                Alterar senha
+              </Button>
+            </form>
+          ) : (
+            <div className="space-y-2">
+              <p className="text-sm text-muted-foreground">
+                Envia um e-mail para {row.email ?? 'o usuário'} com um link para ele definir uma nova senha.
+              </p>
+              <Button type="button" variant="outline" loading={pwBusy} disabled={!canWrite} onClick={enviarResetSenha}>
+                Resetar senha (enviar link)
+              </Button>
+            </div>
+          )}
+          {pwMsg && <p className="text-sm text-muted-foreground">{pwMsg}</p>}
+        </CardContent>
+      </Card>
     </div>
   );
 }
