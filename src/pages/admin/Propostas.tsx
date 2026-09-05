@@ -258,6 +258,7 @@ export function PropostaView() {
   const nav = useNavigate();
   const [doc, setDoc] = useState<ProposalDoc | null>(null);
   const [busy, setBusy] = useState(false);
+  const [err, setErr] = useState<string | null>(null);
 
   const load = useCallback(() => {
     getOne<ProposalDoc>('Proposal', id!, '*, Customer(name)').then((r) => (r ? setDoc(r) : nav('/admin/propostas')));
@@ -268,9 +269,12 @@ export function PropostaView() {
 
   async function setStatus(status: string) {
     setBusy(true);
+    setErr(null);
     try {
       await updateRow('Proposal', doc!.id, { status });
       load();
+    } catch (e) {
+      setErr((e as Error).message);
     } finally {
       setBusy(false);
     }
@@ -278,8 +282,15 @@ export function PropostaView() {
 
   async function remove() {
     if (!confirm('Excluir esta proposta?')) return;
-    await deleteRow('Proposal', doc!.id);
-    nav('/admin/propostas');
+    setBusy(true);
+    setErr(null);
+    try {
+      await deleteRow('Proposal', doc!.id);
+      nav('/admin/propostas');
+    } catch (e) {
+      setErr((e as Error).message);
+      setBusy(false);
+    }
   }
 
   async function converterEmContrato() {
@@ -335,13 +346,124 @@ export function PropostaView() {
           <Button size="sm" variant="outline" disabled={busy} onClick={converterEmContrato}>
             Converter em contrato
           </Button>
-          <Button size="sm" variant="outline" className="ml-auto text-accent" onClick={remove}>
+          <Button size="sm" variant="outline" disabled={busy} onClick={() => nav(`/admin/propostas/${doc.id}/editar`)}>
+            Editar
+          </Button>
+          <Button size="sm" variant="outline" className="ml-auto text-accent" disabled={busy} onClick={remove}>
             Excluir
           </Button>
         </CardContent>
+        {err && <CardContent className="pt-0 text-sm text-accent">{err}</CardContent>}
       </Card>
 
       <DocumentView title={`Proposta ${doc.number}`} html={doc.bodyHtml ?? '<p>Sem conteúdo.</p>'} />
+    </div>
+  );
+}
+
+export function PropostaEdit() {
+  const { id } = useParams();
+  const nav = useNavigate();
+  const [customers, setCustomers] = useState<Customer[]>([]);
+  const [customerId, setCustomerId] = useState('');
+  const [title, setTitle] = useState('');
+  const [total, setTotal] = useState('');
+  const [bodyHtml, setBodyHtml] = useState('');
+  const [number, setNumber] = useState('');
+  const [loaded, setLoaded] = useState(false);
+  const [busy, setBusy] = useState(false);
+  const [err, setErr] = useState<string | null>(null);
+
+  useEffect(() => {
+    supabase
+      .from('Customer')
+      .select('id, name, cpf, cnpj, whatsapp, phone')
+      .is('deletedAt', null)
+      .order('name')
+      .limit(500)
+      .then(({ data }) => setCustomers((data as Customer[]) ?? []));
+    getOne<ProposalDoc>('Proposal', id!).then((r) => {
+      if (!r) return nav('/admin/propostas');
+      setCustomerId(r.customerId ?? '');
+      setTitle(r.title);
+      setTotal(String(r.total));
+      setBodyHtml(r.bodyHtml ?? '');
+      setNumber(r.number);
+      setLoaded(true);
+    });
+  }, [id, nav]);
+
+  async function onSubmit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setBusy(true);
+    setErr(null);
+    try {
+      await updateRow('Proposal', id!, {
+        customerId: customerId || null,
+        title,
+        total: Number(total || 0),
+        bodyHtml,
+      });
+      nav(`/admin/propostas/${id}`);
+    } catch (e) {
+      setErr((e as Error).message);
+      setBusy(false);
+    }
+  }
+
+  if (!loaded) return <Spinner />;
+
+  return (
+    <div>
+      <PageHeader title={`Editar proposta ${number}`} subtitle="Ajuste os dados ou corrija o texto da proposta" />
+      <form onSubmit={onSubmit} className="grid gap-6 lg:grid-cols-[1fr_1fr]">
+        <div className="space-y-4">
+          <div className="flex flex-col gap-1.5">
+            <label className="text-sm font-medium">Cliente</label>
+            <Select value={customerId} onChange={(e) => setCustomerId(e.target.value)}>
+              <option value="">—</option>
+              {customers.map((c) => (
+                <option key={c.id} value={c.id}>
+                  {c.name}
+                </option>
+              ))}
+            </Select>
+          </div>
+          <div className="flex flex-col gap-1.5">
+            <label className="text-sm font-medium">Título</label>
+            <Input value={title} onChange={(e) => setTitle(e.target.value)} required />
+          </div>
+          <div className="flex flex-col gap-1.5">
+            <label className="text-sm font-medium">Valor total (R$)</label>
+            <Input type="number" step="0.01" value={total} onChange={(e) => setTotal(e.target.value)} />
+          </div>
+          <div className="flex flex-col gap-1.5">
+            <label className="text-sm font-medium">Texto da proposta</label>
+            <Textarea
+              value={bodyHtml}
+              onChange={(e) => setBodyHtml(e.target.value)}
+              rows={16}
+              className="font-mono text-xs"
+            />
+            <p className="text-xs text-muted-foreground">HTML do documento — corrija diretamente o texto, valores ou dados que precisarem de ajuste.</p>
+          </div>
+
+          {err && <p className="text-sm text-accent">{err}</p>}
+          <div className="flex gap-2">
+            <Button type="submit" loading={busy}>
+              Salvar alterações
+            </Button>
+            <Button type="button" variant="outline" onClick={() => nav(`/admin/propostas/${id}`)}>
+              Cancelar
+            </Button>
+          </div>
+        </div>
+
+        <div>
+          <h2 className="mb-2 text-sm font-semibold uppercase tracking-wider text-muted-foreground">Prévia</h2>
+          <DocumentView title="Prévia da proposta" html={bodyHtml} />
+        </div>
+      </form>
     </div>
   );
 }

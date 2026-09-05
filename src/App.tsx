@@ -9,8 +9,8 @@ import { Clientes, ClienteForm } from '@/pages/admin/Clientes';
 import { Equipamentos, EquipamentoForm } from '@/pages/admin/Equipamentos';
 import { Estoque, EstoqueItem } from '@/pages/admin/Estoque';
 import { OrdensServico, OSForm, OSDetail } from '@/pages/admin/OrdensServico';
-import { Contratos, ContratoForm, ContratoView } from '@/pages/admin/Contratos';
-import { Propostas, PropostaForm, PropostaView } from '@/pages/admin/Propostas';
+import { Contratos, ContratoForm, ContratoView, ContratoEdit } from '@/pages/admin/Contratos';
+import { Propostas, PropostaForm, PropostaView, PropostaEdit } from '@/pages/admin/Propostas';
 import { Usuarios, UsuarioForm, UsuarioEdit } from '@/pages/admin/Usuarios';
 import { Financeiro, FinanceiroForm, FinanceiroView } from '@/pages/admin/Financeiro';
 
@@ -44,9 +44,11 @@ export default function App() {
                 <Route path="contratos" element={<Contratos />} />
                 <Route path="contratos/novo" element={<ContratoForm />} />
                 <Route path="contratos/:id" element={<ContratoView />} />
+                <Route path="contratos/:id/editar" element={<ContratoEdit />} />
                 <Route path="propostas" element={<Propostas />} />
                 <Route path="propostas/novo" element={<PropostaForm />} />
                 <Route path="propostas/:id" element={<PropostaView />} />
+                <Route path="propostas/:id/editar" element={<PropostaEdit />} />
                 <Route path="usuarios" element={<Usuarios />} />
                 <Route path="usuarios/novo" element={<UsuarioForm />} />
                 <Route path="usuarios/:id" element={<UsuarioEdit />} />

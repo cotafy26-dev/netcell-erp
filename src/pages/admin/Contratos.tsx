@@ -266,6 +266,7 @@ export function ContratoView() {
   const nav = useNavigate();
   const [doc, setDoc] = useState<ContractDoc | null>(null);
   const [busy, setBusy] = useState(false);
+  const [err, setErr] = useState<string | null>(null);
 
   const load = useCallback(() => {
     getOne<ContractDoc>('Contract', id!, '*, Customer(name)').then((r) => (r ? setDoc(r) : nav('/admin/contratos')));
@@ -276,9 +277,12 @@ export function ContratoView() {
 
   async function setStatus(status: string) {
     setBusy(true);
+    setErr(null);
     try {
       await updateRow('Contract', doc!.id, { status });
       load();
+    } catch (e) {
+      setErr((e as Error).message);
     } finally {
       setBusy(false);
     }
@@ -286,8 +290,15 @@ export function ContratoView() {
 
   async function remove() {
     if (!confirm('Excluir este contrato?')) return;
-    await deleteRow('Contract', doc!.id);
-    nav('/admin/contratos');
+    setBusy(true);
+    setErr(null);
+    try {
+      await deleteRow('Contract', doc!.id);
+      nav('/admin/contratos');
+    } catch (e) {
+      setErr((e as Error).message);
+      setBusy(false);
+    }
   }
 
   return (
@@ -310,13 +321,124 @@ export function ContratoView() {
               {s}
             </Button>
           ))}
-          <Button size="sm" variant="outline" className="ml-auto text-accent" onClick={remove}>
+          <Button size="sm" variant="outline" disabled={busy} onClick={() => nav(`/admin/contratos/${doc.id}/editar`)}>
+            Editar
+          </Button>
+          <Button size="sm" variant="outline" className="ml-auto text-accent" disabled={busy} onClick={remove}>
             Excluir
           </Button>
         </CardContent>
+        {err && <CardContent className="pt-0 text-sm text-accent">{err}</CardContent>}
       </Card>
 
       <DocumentView title={`Contrato ${doc.number}`} html={doc.bodyHtml ?? '<p>Sem conteúdo.</p>'} />
+    </div>
+  );
+}
+
+export function ContratoEdit() {
+  const { id } = useParams();
+  const nav = useNavigate();
+  const [customers, setCustomers] = useState<Customer[]>([]);
+  const [customerId, setCustomerId] = useState('');
+  const [title, setTitle] = useState('');
+  const [value, setValue] = useState('');
+  const [bodyHtml, setBodyHtml] = useState('');
+  const [number, setNumber] = useState('');
+  const [loaded, setLoaded] = useState(false);
+  const [busy, setBusy] = useState(false);
+  const [err, setErr] = useState<string | null>(null);
+
+  useEffect(() => {
+    supabase
+      .from('Customer')
+      .select('id, name, cpf, cnpj, whatsapp, phone')
+      .is('deletedAt', null)
+      .order('name')
+      .limit(500)
+      .then(({ data }) => setCustomers((data as Customer[]) ?? []));
+    getOne<ContractDoc & { customerId: string | null }>('Contract', id!).then((r) => {
+      if (!r) return nav('/admin/contratos');
+      setCustomerId(r.customerId ?? '');
+      setTitle(r.title);
+      setValue(String(r.value));
+      setBodyHtml(r.bodyHtml ?? '');
+      setNumber(r.number);
+      setLoaded(true);
+    });
+  }, [id, nav]);
+
+  async function onSubmit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setBusy(true);
+    setErr(null);
+    try {
+      await updateRow('Contract', id!, {
+        customerId: customerId || null,
+        title,
+        value: Number(value || 0),
+        bodyHtml,
+      });
+      nav(`/admin/contratos/${id}`);
+    } catch (e) {
+      setErr((e as Error).message);
+      setBusy(false);
+    }
+  }
+
+  if (!loaded) return <Spinner />;
+
+  return (
+    <div>
+      <PageHeader title={`Editar contrato ${number}`} subtitle="Ajuste os dados ou corrija o texto do contrato" />
+      <form onSubmit={onSubmit} className="grid gap-6 lg:grid-cols-[1fr_1fr]">
+        <div className="space-y-4">
+          <div className="flex flex-col gap-1.5">
+            <label className="text-sm font-medium">Cliente</label>
+            <Select value={customerId} onChange={(e) => setCustomerId(e.target.value)}>
+              <option value="">—</option>
+              {customers.map((c) => (
+                <option key={c.id} value={c.id}>
+                  {c.name}
+                </option>
+              ))}
+            </Select>
+          </div>
+          <div className="flex flex-col gap-1.5">
+            <label className="text-sm font-medium">Título</label>
+            <Input value={title} onChange={(e) => setTitle(e.target.value)} required />
+          </div>
+          <div className="flex flex-col gap-1.5">
+            <label className="text-sm font-medium">Valor total (R$)</label>
+            <Input type="number" step="0.01" value={value} onChange={(e) => setValue(e.target.value)} />
+          </div>
+          <div className="flex flex-col gap-1.5">
+            <label className="text-sm font-medium">Texto do contrato</label>
+            <Textarea
+              value={bodyHtml}
+              onChange={(e) => setBodyHtml(e.target.value)}
+              rows={16}
+              className="font-mono text-xs"
+            />
+            <p className="text-xs text-muted-foreground">HTML do documento — corrija diretamente o texto, valores ou dados que precisarem de ajuste.</p>
+          </div>
+
+          {err && <p className="text-sm text-accent">{err}</p>}
+          <div className="flex gap-2">
+            <Button type="submit" loading={busy}>
+              Salvar alterações
+            </Button>
+            <Button type="button" variant="outline" onClick={() => nav(`/admin/contratos/${id}`)}>
+              Cancelar
+            </Button>
+          </div>
+        </div>
+
+        <div>
+          <h2 className="mb-2 text-sm font-semibold uppercase tracking-wider text-muted-foreground">Prévia</h2>
+          <DocumentView title="Prévia do contrato" html={bodyHtml} />
+        </div>
+      </form>
     </div>
   );
 }
