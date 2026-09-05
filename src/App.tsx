@@ -2,7 +2,6 @@ import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { AuthProvider } from '@/lib/auth';
 import { ThemeProvider } from '@/lib/theme';
 import { AdminLayout, PortalLayout, RequireAuth } from '@/components/layout';
-import { Home } from '@/pages/Home';
 import { Login } from '@/pages/Login';
 import { Portal } from '@/pages/Portal';
 import { Dashboard } from '@/pages/admin/Dashboard';
@@ -12,9 +11,10 @@ import { Estoque, EstoqueItem } from '@/pages/admin/Estoque';
 import { OrdensServico, OSForm, OSDetail } from '@/pages/admin/OrdensServico';
 
 /**
- * "/" mostra a página de entrada (pitch curto + botão Entrar), que leva ao
- * login. De lá, cliente e admin são levados cada um pro seu destino
- * (/portal ou /admin) conforme o papel do usuário logado.
+ * A página de vendas é o index.html estático (raiz do domínio) — não faz
+ * parte deste app React. Este shell (app.html) só existe pra /login, /admin
+ * e /portal; o .htaccess manda qualquer uma dessas rotas pra cá.
+ * "/" aqui é só uma rede de segurança (não deveria ser alcançado na prática).
  */
 export default function App() {
   return (
@@ -22,7 +22,7 @@ export default function App() {
       <BrowserRouter>
         <AuthProvider>
           <Routes>
-            <Route path="/" element={<Home />} />
+            <Route path="/" element={<Navigate to="/login" replace />} />
             <Route path="/login" element={<Login />} />
 
             <Route element={<RequireAuth staffOnly />}>
@@ -46,7 +46,7 @@ export default function App() {
               </Route>
             </Route>
 
-            <Route path="*" element={<Navigate to="/" replace />} />
+            <Route path="*" element={<Navigate to="/login" replace />} />
           </Routes>
         </AuthProvider>
       </BrowserRouter>

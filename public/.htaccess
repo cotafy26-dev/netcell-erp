@@ -1,12 +1,13 @@
-# SPA (React Router) — serve index.html para qualquer rota.
-# Necessário no Apache/Hostinger para /admin, /login etc. funcionarem ao recarregar.
+# index.html = página de vendas (estática) — servida direto em "/", sem reescrita.
+# Qualquer outra rota que não seja um arquivo/pasta real (/login, /admin,
+# /admin/clientes, /portal...) cai no shell do React em app.html.
 <IfModule mod_rewrite.c>
   RewriteEngine On
   RewriteBase /
-  RewriteRule ^index\.html$ - [L]
+  RewriteRule ^(index|app)\.html$ - [L]
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteCond %{REQUEST_FILENAME} !-d
-  RewriteRule . /index.html [L]
+  RewriteRule . /app.html [L]
 </IfModule>
 
 # cache dos assets com hash
