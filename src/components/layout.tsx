@@ -25,9 +25,10 @@ function Sidebar() {
 
   return (
     <aside className="hidden w-64 shrink-0 border-r bg-card md:block">
-      <div className="flex h-16 items-center gap-2 border-b px-5 font-display font-bold tracking-widest">
-        NETCELL <span className="text-accent">·</span>
-        <span className="text-sm text-muted-foreground">ERP</span>
+      <div className="flex h-16 items-center border-b px-5">
+        <div className="rounded-md bg-white px-2.5 py-1.5">
+          <img src="/logo-netcell.png" alt="NetCell Informática" className="h-8 w-auto" />
+        </div>
       </div>
       <nav className="space-y-6 p-4">
         {GROUPS.map((g) => {

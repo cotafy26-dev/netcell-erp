@@ -183,7 +183,7 @@ export function PropostaForm() {
           {tags.map((tag) => (
             <div key={tag} className="flex flex-col gap-1.5">
               <label className="text-sm font-medium">{tagLabel(tag)}</label>
-              {tag === 'descricao_servico' || tag === 'observacoes' ? (
+              {tag === 'descricao_servico' || tag === 'observacoes' || tag === 'itens' ? (
                 <Textarea value={values[tag] ?? ''} onChange={(e) => setValues((v) => ({ ...v, [tag]: e.target.value }))} />
               ) : (
                 <Input

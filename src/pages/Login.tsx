@@ -37,8 +37,8 @@ export function Login() {
       </Button>
       <Card className="w-full max-w-sm animate-fade-in">
         <CardHeader>
-          <div className="mb-2 font-display text-xl font-bold tracking-widest">
-            NETCELL <span className="text-accent">ERP</span>
+          <div className="mb-3 w-fit rounded-md bg-white px-3 py-2">
+            <img src="/logo-netcell.png" alt="NetCell Informática" className="h-10 w-auto" />
           </div>
           <CardTitle>Entrar</CardTitle>
         </CardHeader>

@@ -30,10 +30,13 @@ export function DocumentView({ title, html }: { title: string; html: string }) {
 
       <div id="doc-print-area" className="doc-paper">
         <header className="doc-header">
-          <strong>NETCELL INFORMÁTICA</strong>
-          <span>CNPJ 61.932.181/0001-89 · (98) 98595-4491</span>
+          <img src="/logo-netcell.png" alt="NetCell Informática" />
         </header>
         <div dangerouslySetInnerHTML={{ __html: html }} />
+        <footer className="doc-footer">
+          <span>NETCELL INFORMÁTICA · {title}</span>
+          <span>Página 1</span>
+        </footer>
       </div>
 
       <style>{`
@@ -42,22 +45,33 @@ export function DocumentView({ title, html }: { title: string; html: string }) {
           padding: 40px 48px; border-radius: 8px; border: 1px solid hsl(var(--border));
           font-size: 14px; line-height: 1.6;
         }
-        .doc-header{
-          display:flex; justify-content:space-between; align-items:baseline;
-          border-bottom: 2px solid #111; padding-bottom: 10px; margin-bottom: 20px;
-          font-size: 12px; color:#555;
+        .doc-header{ text-align:center; margin-bottom: 8px }
+        .doc-header img{ height: 64px; width:auto }
+        .doc-footer{
+          display:flex; justify-content:space-between; align-items:center;
+          border-top: 1px solid #ddd; margin-top: 32px; padding-top: 10px;
+          font-size: 10px; color:#999;
         }
-        .doc-header strong{ font-size: 15px; color:#111; letter-spacing:.04em }
         .doc-paper h1{ font-size: 18px; text-align:center; margin: 0 0 4px; color:#111 }
         .doc-paper .subtitle{ text-align:center; color:#666; font-size:12px; margin:0 0 20px }
         .doc-paper h2.annex{ font-size:16px; margin-top:32px; border-top:2px solid #111; padding-top:16px }
-        .doc-paper h3{ font-size:13px; margin:18px 0 6px; text-transform:uppercase; letter-spacing:.03em }
-        .doc-paper p{ margin: 0 0 10px }
+        .doc-paper h3{ font-size:13px; margin:18px 0 6px; text-transform:uppercase; letter-spacing:.03em; color:#1a4d8f }
+        .doc-paper p{ margin: 0 0 10px; white-space: pre-line }
         .doc-paper table.parties{ width:100%; border-collapse:collapse; margin-bottom:16px }
         .doc-paper table.parties th{ text-align:left; font-size:11px; text-transform:uppercase; color:#666; padding:6px 10px; border-bottom:1px solid #ccc }
         .doc-paper table.parties td{ vertical-align:top; padding:8px 10px; border:1px solid #ddd; font-size:13px }
-        .doc-paper table.signatures{ width:100%; margin-top:36px }
+        .doc-paper table.items{ width:100%; border-collapse:collapse; margin:10px 0 16px }
+        .doc-paper table.items th{ text-align:left; font-size:11px; text-transform:uppercase; color:#666; padding:6px 10px; background:#f3f5f8; border:1px solid #ddd }
+        .doc-paper table.items td{ padding:6px 10px; border:1px solid #ddd; font-size:13px }
+        .doc-paper table.items td.total{ font-weight:700; color:#1a4d8f }
+        .doc-paper table.info{ width:100%; border-collapse:collapse; margin:10px 0 16px }
+        .doc-paper table.info th{ width:30%; text-align:left; font-size:12px; color:#555; padding:7px 10px; background:#f3f5f8; border:1px solid #ddd }
+        .doc-paper table.info td{ padding:7px 10px; border:1px solid #ddd; font-size:13px }
+        .doc-paper .pix-box{ border:1px solid #ddd; border-radius:6px; padding:12px 16px; margin:8px 0 16px; background:#f8f9fb }
+        .doc-paper .pix-box strong{ display:block; margin-bottom:4px; color:#1a4d8f }
+        .doc-paper table.signatures{ width:100%; margin-top:36px; text-align:center }
         .doc-paper table.signatures td{ width:50%; padding-top:24px; font-size:13px }
+        .doc-paper .sig-label{ display:block; margin-top:4px; font-size:11px; color:#666 }
         .doc-paper .local-data{ margin-top:24px }
 
         @media print{
