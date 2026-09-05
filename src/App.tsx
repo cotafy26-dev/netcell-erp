@@ -9,6 +9,8 @@ import { Clientes, ClienteForm } from '@/pages/admin/Clientes';
 import { Equipamentos, EquipamentoForm } from '@/pages/admin/Equipamentos';
 import { Estoque, EstoqueItem } from '@/pages/admin/Estoque';
 import { OrdensServico, OSForm, OSDetail } from '@/pages/admin/OrdensServico';
+import { Contratos, ContratoForm, ContratoView } from '@/pages/admin/Contratos';
+import { Propostas, PropostaForm, PropostaView } from '@/pages/admin/Propostas';
 
 /**
  * A página de vendas é o index.html estático (raiz do domínio) — não faz
@@ -37,6 +39,12 @@ export default function App() {
                 <Route path="os" element={<OrdensServico />} />
                 <Route path="os/novo" element={<OSForm />} />
                 <Route path="os/:id" element={<OSDetail />} />
+                <Route path="contratos" element={<Contratos />} />
+                <Route path="contratos/novo" element={<ContratoForm />} />
+                <Route path="contratos/:id" element={<ContratoView />} />
+                <Route path="propostas" element={<Propostas />} />
+                <Route path="propostas/novo" element={<PropostaForm />} />
+                <Route path="propostas/:id" element={<PropostaView />} />
               </Route>
             </Route>
 
