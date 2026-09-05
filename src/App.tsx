@@ -1,4 +1,4 @@
-import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
+import { HashRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { AuthProvider } from '@/lib/auth';
 import { ThemeProvider } from '@/lib/theme';
 import { AdminLayout, PortalLayout, RequireAuth } from '@/components/layout';
@@ -16,15 +16,29 @@ import { Usuarios, UsuarioForm, UsuarioEdit } from '@/pages/admin/Usuarios';
 import { Financeiro, FinanceiroForm, FinanceiroView } from '@/pages/admin/Financeiro';
 
 /**
- * A página de vendas é o index.html estático (raiz do domínio) — não faz
- * parte deste app React. Este shell (app.html) só existe pra /login, /admin
- * e /portal; o .htaccess manda qualquer uma dessas rotas pra cá.
- * "/" aqui é só uma rede de segurança (não deveria ser alcançado na prática).
+ * Roteamento por hash (#/login, #/admin/...) — igual em espírito ao gtic:
+ * roda inteiro no navegador, o servidor sempre entrega o mesmo app.html,
+ * sem depender de reescrita no .htaccess. Deep link e refresh nunca quebram.
+ *
+ * A página de vendas é o index.html estático (raiz do domínio); o link
+ * "Entrar" de lá aponta para /app.html, que carrega este app.
  */
 export default function App() {
+  // O e-mail de redefinição de senha do Supabase volta com o token no hash
+  // (#access_token=...&type=recovery). Nesse caso, mostra direto a tela de
+  // nova senha, antes do roteador tentar interpretar o hash como rota.
+  const rawHash = typeof window !== 'undefined' ? window.location.hash.replace(/^#/, '') : '';
+  if (/access_token=/.test(rawHash) && /type=recovery/.test(rawHash)) {
+    return (
+      <ThemeProvider>
+        <RedefinirSenha />
+      </ThemeProvider>
+    );
+  }
+
   return (
     <ThemeProvider>
-      <BrowserRouter>
+      <HashRouter>
         <AuthProvider>
           <Routes>
             <Route path="/" element={<Navigate to="/login" replace />} />
@@ -69,7 +83,7 @@ export default function App() {
             <Route path="*" element={<Navigate to="/login" replace />} />
           </Routes>
         </AuthProvider>
-      </BrowserRouter>
+      </HashRouter>
     </ThemeProvider>
   );
 }

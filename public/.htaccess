@@ -1,13 +1,36 @@
-# index.html = página de vendas (estática) — servida direto em "/", sem reescrita.
-# Qualquer outra rota que não seja um arquivo/pasta real (/login, /admin,
-# /admin/clientes, /portal...) cai no shell do React em app.html.
+# App com roteamento por hash (#/...). O servidor só precisa entregar os
+# arquivos como eles são — nenhuma reescrita de rota é necessária.
 <IfModule mod_rewrite.c>
   RewriteEngine On
   RewriteBase /
+
+  # arquivos servidos como eles mesmos (nunca virar HTML)
   RewriteRule ^(index|app)\.html$ - [L]
+  RewriteRule ^sw\.js$ - [L]
+  RewriteRule ^manifest\.webmanifest$ - [L]
+  RewriteRule ^icon\.svg$ - [L]
+  RewriteRule ^logo-netcell\.png$ - [L]
+
+  # links antigos (BrowserRouter) -> manda pro app com hash
+  RewriteRule ^(login|admin|portal|redefinir-senha)(/.*)?$ /app.html#/$1$2 [R=302,NE,L]
+
+  # qualquer outra coisa que não seja arquivo/pasta real -> app
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteCond %{REQUEST_FILENAME} !-d
   RewriteRule . /app.html [L]
+</IfModule>
+
+# tipos corretos
+<IfModule mod_mime.c>
+  AddType application/manifest+json .webmanifest
+  AddType text/javascript .js
+</IfModule>
+
+# sw.js nunca em cache (pro kill-switch pegar rápido)
+<IfModule mod_headers.c>
+  <FilesMatch "^sw\.js$">
+    Header set Cache-Control "no-cache, no-store, must-revalidate"
+  </FilesMatch>
 </IfModule>
 
 # cache dos assets com hash
@@ -16,9 +39,4 @@
   ExpiresByType text/css "access plus 1 year"
   ExpiresByType application/javascript "access plus 1 year"
   ExpiresByType image/svg+xml "access plus 1 month"
-</IfModule>
-
-# PWA: MIME do manifest
-<IfModule mod_mime.c>
-  AddType application/manifest+json .webmanifest
 </IfModule>

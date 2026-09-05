@@ -215,7 +215,7 @@ export function UsuarioEdit() {
     setPwMsg(null);
     try {
       const { error } = await supabase.auth.resetPasswordForEmail(row!.email, {
-        redirectTo: `${window.location.origin}/redefinir-senha`,
+        redirectTo: `${window.location.origin}/app.html`,
       });
       if (error) throw new Error(error.message);
       setPwMsg(`E-mail de redefinição enviado para ${row!.email}.`);

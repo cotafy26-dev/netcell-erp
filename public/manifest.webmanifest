@@ -2,7 +2,7 @@
   "name": "NetCell Informática — ERP",
   "short_name": "NetCell ERP",
   "description": "Gestão da NetCell Informática — clientes, contratos, propostas, equipamentos e financeiro.",
-  "start_url": "/login",
+  "start_url": "/app.html",
   "scope": "/",
   "display": "standalone",
   "orientation": "portrait",

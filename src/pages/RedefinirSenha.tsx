@@ -1,15 +1,19 @@
 import { useEffect, useState, type FormEvent } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/lib/supabase';
 import { Button, Card, CardContent, CardHeader, CardTitle, Input, Spinner } from '@/components/ui';
+
+function irParaLogin() {
+  window.location.hash = '#/login';
+  window.location.reload();
+}
 
 /**
  * Destino do link enviado por "Resetar senha". O e-mail do Supabase volta
  * pra cá com o token de recuperação no hash da URL; aqui a gente abre a
  * sessão temporária, deixa a pessoa definir a nova senha e desloga.
+ * Renderiza fora do roteador (não usa useNavigate) — o token vem no hash.
  */
 export function RedefinirSenha() {
-  const nav = useNavigate();
   const [ready, setReady] = useState(false);
   const [erroToken, setErroToken] = useState<string | null>(null);
   const [senha, setSenha] = useState('');
@@ -49,7 +53,7 @@ export function RedefinirSenha() {
       if (error) throw new Error(error.message);
       await supabase.auth.signOut();
       setMsg('Senha definida! Redirecionando para o login…');
-      setTimeout(() => nav('/login'), 1500);
+      setTimeout(irParaLogin, 1500);
     } catch (e) {
       setMsg((e as Error).message);
       setBusy(false);
@@ -76,7 +80,7 @@ export function RedefinirSenha() {
           {erroToken ? (
             <div className="space-y-3">
               <p className="text-sm text-accent">{erroToken}</p>
-              <Button variant="outline" onClick={() => nav('/login')}>
+              <Button variant="outline" onClick={irParaLogin}>
                 Ir para o login
               </Button>
             </div>
