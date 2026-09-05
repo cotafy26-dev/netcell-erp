@@ -27,6 +27,8 @@ export const ERP_MODULES: ModuleDef[] = [
   { key: 'equipment', label: 'Equipamentos', path: '/admin/equipamentos', icon: 'HardDrive', resource: 'equipment', group: 'Operação' },
   { key: 'inventory', label: 'Estoque', path: '/admin/estoque', icon: 'Boxes', resource: 'inventory', group: 'Operação' },
   { key: 'service_orders', label: 'Ordens de Serviço', path: '/admin/os', icon: 'Wrench', resource: 'service_orders', group: 'Operação' },
+
+  { key: 'finance', label: 'Financeiro', path: '/admin/financeiro', icon: 'CircleDollarSign', resource: 'finance', group: 'Financeiro' },
 ];
 
 /** Tags aceitas nos modelos de contrato/proposta — {{tag}} vira input no formulário. */

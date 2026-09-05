@@ -12,6 +12,7 @@ import { OrdensServico, OSForm, OSDetail } from '@/pages/admin/OrdensServico';
 import { Contratos, ContratoForm, ContratoView } from '@/pages/admin/Contratos';
 import { Propostas, PropostaForm, PropostaView } from '@/pages/admin/Propostas';
 import { Usuarios, UsuarioForm, UsuarioEdit } from '@/pages/admin/Usuarios';
+import { Financeiro, FinanceiroForm, FinanceiroView } from '@/pages/admin/Financeiro';
 
 /**
  * A página de vendas é o index.html estático (raiz do domínio) — não faz
@@ -49,6 +50,9 @@ export default function App() {
                 <Route path="usuarios" element={<Usuarios />} />
                 <Route path="usuarios/novo" element={<UsuarioForm />} />
                 <Route path="usuarios/:id" element={<UsuarioEdit />} />
+                <Route path="financeiro" element={<Financeiro />} />
+                <Route path="financeiro/novo" element={<FinanceiroForm />} />
+                <Route path="financeiro/:id" element={<FinanceiroView />} />
               </Route>
             </Route>
 
