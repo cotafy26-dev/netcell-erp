@@ -438,14 +438,17 @@
   /* ---------- Floating WhatsApp ---------- */
   .wa-float{
     position:fixed;right:18px;bottom:18px;z-index:1040;
-    width:60px;height:60px;border-radius:50%;
+    width:56px;height:56px;border-radius:50%;
     display:grid;place-items:center;
     background:linear-gradient(180deg,var(--wa),var(--wa-dark));
-    color:#fff;font-size:1.7rem;
+    color:#fff;font-size:1.55rem;
     box-shadow:0 16px 34px -10px rgba(37,211,102,.7);
     transition:transform .18s ease;
   }
   .wa-float:hover{transform:scale(1.08);color:#fff}
+  @media (max-width:575.98px){
+    .wa-float{right:12px;bottom:12px;width:46px;height:46px;font-size:1.2rem}
+  }
 
   /* ---------- Reveal animations ---------- */
   .reveal,.reveal-group>*{opacity:0;transform:translateY(24px);transition:opacity .7s ease, transform .7s ease}
@@ -649,168 +652,6 @@
 
 <main id="top">
 
-<!-- ================= HERO ================= -->
-
-
-<!-- ================= SERVIÇOS (TI) ================= -->
-<section class="sec" id="servicos">
-  <div class="container">
-    <div class="text-center reveal">
-      <span class="eyebrow">Soluções em Tecnologia</span>
-      <h2 class="sec-title">Nossos serviços</h2>
-      <p class="sec-lead mx-auto">Da manutenção do computador à infraestrutura de rede da sua empresa — a Netcell Informática cuida da sua tecnologia de ponta a ponta.</p>
-    </div>
-
-    <div class="row g-3 g-md-4 mt-2 reveal-group">
-      <div class="col-12 col-md-6 col-lg-4">
-        <div class="service-card">
-          <span class="svc-ico"><i class="fa-solid fa-headset"></i></span>
-          <h3>Suporte de TI</h3>
-          <p>Atendimento técnico remoto e presencial para manter pessoas e empresas sempre funcionando, com planos mensais para negócios.</p>
-          <a class="svc-link js-wa" data-msg="Olá! Gostaria de um orçamento de Suporte de TI." href="https://wa.me/5598985954491?text=Ol%C3%A1!%20Gostaria%20de%20falar%20com%20a%20Netcell%20Inform%C3%A1tica." target="_blank" rel="noopener">Solicitar orçamento <i class="fa-solid fa-arrow-right-long"></i></a>
-        </div>
-      </div>
-      <div class="col-12 col-md-6 col-lg-4">
-        <div class="service-card">
-          <span class="svc-ico"><i class="fa-solid fa-network-wired"></i></span>
-          <h3>Redes de computadores</h3>
-          <p>Projeto, instalação e configuração de redes cabeadas e Wi-Fi de alta performance, com roteadores, switches e access points.</p>
-          <a class="svc-link js-wa" data-msg="Olá! Gostaria de um orçamento para Redes de computadores." href="https://wa.me/5598985954491?text=Ol%C3%A1!%20Gostaria%20de%20falar%20com%20a%20Netcell%20Inform%C3%A1tica." target="_blank" rel="noopener">Solicitar orçamento <i class="fa-solid fa-arrow-right-long"></i></a>
-        </div>
-      </div>
-      <div class="col-12 col-md-6 col-lg-4">
-        <div class="service-card">
-          <span class="svc-ico"><i class="fa-solid fa-screwdriver-wrench"></i></span>
-          <h3>Manutenção de equipamentos</h3>
-          <p>Manutenção preventiva e corretiva de computadores, notebooks, impressoras e periféricos, com troca de peças e limpeza.</p>
-          <a class="svc-link js-wa" data-msg="Olá! Gostaria de um orçamento de Manutenção de equipamentos." href="https://wa.me/5598985954491?text=Ol%C3%A1!%20Gostaria%20de%20falar%20com%20a%20Netcell%20Inform%C3%A1tica." target="_blank" rel="noopener">Solicitar orçamento <i class="fa-solid fa-arrow-right-long"></i></a>
-        </div>
-      </div>
-      <div class="col-12 col-md-6 col-lg-4">
-        <div class="service-card">
-          <span class="svc-ico"><i class="fa-solid fa-compact-disc"></i></span>
-          <h3>Formatação e sistemas</h3>
-          <p>Formatação, instalação de Windows, Office, drivers, antivírus e programas essenciais, com backup dos seus arquivos.</p>
-          <a class="svc-link js-wa" data-msg="Olá! Gostaria de um orçamento de Formatação e instalação de sistemas." href="https://wa.me/5598985954491?text=Ol%C3%A1!%20Gostaria%20de%20falar%20com%20a%20Netcell%20Inform%C3%A1tica." target="_blank" rel="noopener">Solicitar orçamento <i class="fa-solid fa-arrow-right-long"></i></a>
-        </div>
-      </div>
-      <div class="col-12 col-md-6 col-lg-4">
-        <div class="service-card">
-          <span class="svc-ico"><i class="fa-solid fa-shield-halved"></i></span>
-          <h3>Backup e segurança</h3>
-          <p>Rotinas de backup automático, antivírus e proteção de dados contra perdas, vírus e ataques — na máquina e na nuvem.</p>
-          <a class="svc-link js-wa" data-msg="Olá! Gostaria de um orçamento de Backup e segurança de dados." href="https://wa.me/5598985954491?text=Ol%C3%A1!%20Gostaria%20de%20falar%20com%20a%20Netcell%20Inform%C3%A1tica." target="_blank" rel="noopener">Solicitar orçamento <i class="fa-solid fa-arrow-right-long"></i></a>
-        </div>
-      </div>
-      <div class="col-12 col-md-6 col-lg-4">
-        <div class="service-card">
-          <span class="svc-ico"><i class="fa-solid fa-diagram-project"></i></span>
-          <h3>Cabeamento estruturado</h3>
-          <p>Infraestrutura de cabeamento de rede e telefonia organizada, identificada e testada, para escritórios, lojas e obras.</p>
-          <a class="svc-link js-wa" data-msg="Olá! Gostaria de um orçamento de Cabeamento estruturado." href="https://wa.me/5598985954491?text=Ol%C3%A1!%20Gostaria%20de%20falar%20com%20a%20Netcell%20Inform%C3%A1tica." target="_blank" rel="noopener">Solicitar orçamento <i class="fa-solid fa-arrow-right-long"></i></a>
-        </div>
-      </div>
-      <div class="col-12 col-md-6 col-lg-4">
-        <div class="service-card">
-          <span class="svc-ico"><i class="fa-solid fa-video"></i></span>
-          <h3>Câmeras de segurança (CFTV)</h3>
-          <p>Instalação e configuração de câmeras de monitoramento com gravação e acesso remoto ao vivo pelo celular.</p>
-          <a class="svc-link js-wa" data-msg="Olá! Gostaria de um orçamento de Câmeras de segurança (CFTV)." href="https://wa.me/5598985954491?text=Ol%C3%A1!%20Gostaria%20de%20falar%20com%20a%20Netcell%20Inform%C3%A1tica." target="_blank" rel="noopener">Solicitar orçamento <i class="fa-solid fa-arrow-right-long"></i></a>
-        </div>
-      </div>
-      <div class="col-12 col-md-6 col-lg-4">
-        <div class="service-card">
-          <span class="svc-ico"><i class="fa-solid fa-cart-shopping"></i></span>
-          <h3>Venda de equipamentos</h3>
-          <p>Computadores, notebooks, periféricos, cabos e acessórios com procedência, nota fiscal e garantia.</p>
-          <a class="svc-link js-wa" data-msg="Olá! Gostaria de saber sobre Venda de equipamentos de informática." href="https://wa.me/5598985954491?text=Ol%C3%A1!%20Gostaria%20de%20falar%20com%20a%20Netcell%20Inform%C3%A1tica." target="_blank" rel="noopener">Falar com a loja <i class="fa-solid fa-arrow-right-long"></i></a>
-        </div>
-      </div>
-      <div class="col-12 col-md-6 col-lg-4">
-        <div class="service-card">
-          <span class="svc-ico"><i class="fa-solid fa-satellite-dish"></i></span>
-          <h3>Internet Starlink</h3>
-          <p>Aluguel e instalação de internet via satélite Starlink para qualquer lugar do Brasil, a partir de R$ 50,00 por dia.</p>
-          <a class="svc-link" href="#starlink">Ver detalhes <i class="fa-solid fa-arrow-right-long"></i></a>
-        </div>
-      </div>
-    </div>
-
-    <div class="text-center mt-4 reveal">
-      <a class="btn-wa btn-xl js-wa" data-msg="Olá! Gostaria de falar com a Netcell Informática sobre serviços de TI." href="https://wa.me/5598985954491?text=Ol%C3%A1!%20Gostaria%20de%20falar%20com%20a%20Netcell%20Inform%C3%A1tica." target="_blank" rel="noopener">
-        <i class="fa-brands fa-whatsapp"></i> Solicitar orçamento
-      </a>
-    </div>
-  </div>
-</section>
-
-<!-- ================= SUPORTE DE TI ================= -->
-<section class="sec sec--alt" id="suporte-ti">
-  <div class="container">
-    <div class="text-center reveal">
-      <span class="eyebrow">Suporte de TI</span>
-      <h2 class="sec-title">Sua empresa (e sua casa) sempre funcionando</h2>
-      <p class="sec-lead mx-auto">Atendimento técnico presencial na região e remoto para todo o Brasil — com planos mensais para empresas e chamado avulso para quem precisa de uma ajuda pontual.</p>
-    </div>
-    <div class="row g-3 g-md-4 mt-2 reveal-group">
-      <div class="col-12 col-sm-6 col-lg-4"><div class="service-card"><span class="svc-ico"><i class="fa-solid fa-location-dot"></i></span><h3>Atendimento presencial</h3><p>Técnico na sua empresa ou casa para instalar, configurar e resolver o que precisar.</p></div></div>
-      <div class="col-12 col-sm-6 col-lg-4"><div class="service-card"><span class="svc-ico"><i class="fa-solid fa-laptop-code"></i></span><h3>Suporte remoto</h3><p>Acesso à distância pelo computador para resolver rápido, sem precisar de deslocamento.</p></div></div>
-      <div class="col-12 col-sm-6 col-lg-4"><div class="service-card"><span class="svc-ico"><i class="fa-solid fa-screwdriver-wrench"></i></span><h3>Manutenção de computadores</h3><p>Preventiva e corretiva em PCs, notebooks e impressoras, com troca de peças e limpeza.</p></div></div>
-      <div class="col-12 col-sm-6 col-lg-4"><div class="service-card"><span class="svc-ico"><i class="fa-solid fa-server"></i></span><h3>Servidores e sistemas</h3><p>Configuração, atualização e acompanhamento de servidores, e-mail e sistemas do dia a dia.</p></div></div>
-      <div class="col-12 col-sm-6 col-lg-4"><div class="service-card"><span class="svc-ico"><i class="fa-solid fa-shield-halved"></i></span><h3>Backup e antivírus</h3><p>Rotina de backup automático e proteção contra vírus e perda de dados.</p></div></div>
-      <div class="col-12 col-sm-6 col-lg-4"><div class="service-card"><span class="svc-ico"><i class="fa-solid fa-calendar-check"></i></span><h3>Plano mensal para empresas</h3><p>Suporte contínuo com valor fixo por mês — a sua TI cuidada sem surpresa na conta.</p></div></div>
-    </div>
-    <div class="text-center mt-4 reveal">
-      <a class="btn-wa btn-xl js-wa" data-msg="Olá! Gostaria de falar sobre suporte de TI com a Netcell Informática." href="https://wa.me/5598985954491"><i class="fa-brands fa-whatsapp"></i> Falar com o suporte</a>
-    </div>
-  </div>
-</section>
-
-<!-- ================= SITES E SISTEMAS ================= -->
-<section class="sec" id="sites-sistemas">
-  <div class="container">
-    <div class="text-center reveal">
-      <span class="eyebrow">Sites e sistemas</span>
-      <h2 class="sec-title">Site institucional e sistema sob medida pro seu negócio</h2>
-      <p class="sec-lead mx-auto">Do site que apresenta a sua empresa ao sistema que controla clientes, contratos, propostas e o financeiro — feito do jeito que você trabalha.</p>
-    </div>
-    <div class="row g-3 g-md-4 mt-2 reveal-group">
-      <div class="col-12 col-sm-6 col-lg-4"><div class="service-card"><span class="svc-ico"><i class="fa-solid fa-globe"></i></span><h3>Site institucional</h3><p>Página rápida e responsável no celular, com seus serviços, contato e botão de WhatsApp.</p></div></div>
-      <div class="col-12 col-sm-6 col-lg-4"><div class="service-card"><span class="svc-ico"><i class="fa-solid fa-table-columns"></i></span><h3>Sistema de gestão</h3><p>Um painel só pra controlar o que entra e o que sai do seu negócio, acessível de qualquer lugar.</p></div></div>
-      <div class="col-12 col-sm-6 col-lg-4"><div class="service-card"><span class="svc-ico"><i class="fa-solid fa-users"></i></span><h3>Cadastro de clientes</h3><p>Todos os seus clientes organizados, com histórico, contato e endereço.</p></div></div>
-      <div class="col-12 col-sm-6 col-lg-4"><div class="service-card"><span class="svc-ico"><i class="fa-solid fa-file-signature"></i></span><h3>Contratos e propostas</h3><p>Gera contrato e proposta a partir de um modelo, com numeração automática e PDF pra enviar.</p></div></div>
-      <div class="col-12 col-sm-6 col-lg-4"><div class="service-card"><span class="svc-ico"><i class="fa-solid fa-sack-dollar"></i></span><h3>Controle financeiro</h3><p>Contas a receber e a pagar, baixa de pagamento e visão do que está em aberto ou atrasado.</p></div></div>
-      <div class="col-12 col-sm-6 col-lg-4"><div class="service-card"><span class="svc-ico"><i class="fa-solid fa-mobile-screen-button"></i></span><h3>Acesso pelo celular</h3><p>Login por usuário, funciona no navegador do celular e dá pra instalar como app.</p></div></div>
-    </div>
-    <div class="text-center mt-4 reveal">
-      <a class="btn-wa btn-xl js-wa" data-msg="Olá! Gostaria de falar sobre criação de site ou sistema com a Netcell Informática." href="https://wa.me/5598985954491"><i class="fa-brands fa-whatsapp"></i> Falar sobre meu sistema</a>
-    </div>
-  </div>
-</section>
-
-<!-- ================= REDES DE COMPUTADORES ================= -->
-<section class="sec sec--alt" id="redes">
-  <div class="container">
-    <div class="text-center reveal">
-      <span class="eyebrow">Redes de computadores</span>
-      <h2 class="sec-title">Rede rápida, organizada e sem queda</h2>
-      <p class="sec-lead mx-auto">Do cabeamento estruturado ao Wi-Fi corporativo — projeto, instalação, organização e testes, para escritórios, lojas e obras.</p>
-    </div>
-    <div class="row g-3 g-md-4 mt-2 reveal-group">
-      <div class="col-12 col-sm-6 col-lg-4"><div class="service-card"><span class="svc-ico"><i class="fa-solid fa-diagram-project"></i></span><h3>Cabeamento estruturado</h3><p>Cabos de rede e telefonia passados, identificados e testados, prontos pra crescer.</p></div></div>
-      <div class="col-12 col-sm-6 col-lg-4"><div class="service-card"><span class="svc-ico"><i class="fa-solid fa-wifi"></i></span><h3>Wi-Fi corporativo</h3><p>Cobertura sem ponto morto com access points, para vários aparelhos ao mesmo tempo.</p></div></div>
-      <div class="col-12 col-sm-6 col-lg-4"><div class="service-card"><span class="svc-ico"><i class="fa-solid fa-server"></i></span><h3>Racks e organização</h3><p>Rack montado, cabos amarrados e etiquetados — manutenção fácil e nada de fio solto.</p></div></div>
-      <div class="col-12 col-sm-6 col-lg-4"><div class="service-card"><span class="svc-ico"><i class="fa-solid fa-network-wired"></i></span><h3>Switches e roteadores</h3><p>Equipamentos dimensionados e configurados para o tamanho da sua rede.</p></div></div>
-      <div class="col-12 col-sm-6 col-lg-4"><div class="service-card"><span class="svc-ico"><i class="fa-solid fa-ethernet"></i></span><h3>Pontos de dados</h3><p>Novas tomadas de rede onde você precisa, sem gambiarra e sem cabo no chão.</p></div></div>
-      <div class="col-12 col-sm-6 col-lg-4"><div class="service-card"><span class="svc-ico"><i class="fa-solid fa-video"></i></span><h3>Câmeras (CFTV) na rede</h3><p>Câmeras de segurança integradas à mesma infraestrutura, com acesso pelo celular.</p></div></div>
-    </div>
-    <div class="text-center mt-4 reveal">
-      <a class="btn-wa btn-xl js-wa" data-msg="Olá! Gostaria de um orçamento de rede / cabeamento estruturado." href="https://wa.me/5598985954491"><i class="fa-brands fa-whatsapp"></i> Pedir orçamento de rede</a>
-    </div>
-  </div>
-</section>
-
-<!-- ================= INTERNET STARLINK ================= -->
 <section class="hero" id="starlink">
   <div class="container">
     <div class="row align-items-center g-5">
@@ -967,7 +808,6 @@
   </div>
 </section>
 
-<!-- ================= PARA QUEM É ================= -->
 <section class="sec" id="para-quem">
   <div class="container">
     <div class="text-center reveal">
@@ -992,7 +832,6 @@
   </div>
 </section>
 
-<!-- ================= DIFERENCIAIS ================= -->
 <section class="sec sec--alt" id="diferenciais">
   <div class="container">
     <div class="text-center reveal">
@@ -1011,7 +850,211 @@
   </div>
 </section>
 
-<!-- ================= COMO FUNCIONA ================= -->
+<section class="price-block" id="preco">
+  <div class="container pb-inner reveal">
+    <span class="pb-tag">Promoção · 50% de desconto</span>
+    <div class="pb-label">Aluguel</div>
+    <div class="pb-old">R$ 100,00</div>
+    <div class="pb-price">R$ 50,00</div>
+    <div class="pb-per">por dia</div>
+    <div class="pb-note">Consulte disponibilidade.</div>
+    <a class="btn-dark-wa js-wa" href="https://wa.me/5598985954491?text=Ol%C3%A1!%20Gostaria%20de%20reservar%20uma%20Starlink" target="_blank" rel="noopener">
+      <i class="fa-brands fa-whatsapp"></i> Solicitar disponibilidade
+    </a>
+  </div>
+</section>
+
+<section class="sec sec--alt" id="vantagens">
+  <div class="container">
+    <div class="text-center reveal">
+      <span class="eyebrow">Vantagens</span>
+      <h2 class="sec-title">Tudo o que você ganha ao alugar</h2>
+    </div>
+
+    <div class="row g-3 mt-2 reveal-group">
+      <div class="col-md-6 col-lg-3"><div class="adv-item"><span class="adv-check"><i class="fa-solid fa-infinity"></i></span><span>Internet ilimitada</span></div></div>
+      <div class="col-md-6 col-lg-3"><div class="adv-item"><span class="adv-check"><i class="fa-solid fa-check"></i></span><span>Alta velocidade</span></div></div>
+      <div class="col-md-6 col-lg-3"><div class="adv-item"><span class="adv-check"><i class="fa-solid fa-check"></i></span><span>Sem burocracia</span></div></div>
+      <div class="col-md-6 col-lg-3"><div class="adv-item"><span class="adv-check"><i class="fa-solid fa-check"></i></span><span>Fácil transporte</span></div></div>
+      <div class="col-md-6 col-lg-3"><div class="adv-item"><span class="adv-check"><i class="fa-solid fa-check"></i></span><span>Instalação simples</span></div></div>
+      <div class="col-md-6 col-lg-3"><div class="adv-item"><span class="adv-check"><i class="fa-solid fa-check"></i></span><span>Cobertura nacional</span></div></div>
+      <div class="col-md-6 col-lg-3"><div class="adv-item"><span class="adv-check"><i class="fa-solid fa-check"></i></span><span>Funciona mesmo em locais isolados</span></div></div>
+      <div class="col-md-6 col-lg-3"><div class="adv-item"><span class="adv-check"><i class="fa-solid fa-check"></i></span><span>Ideal para trabalho e lazer</span></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec sec--alt" id="garantias">
+  <div class="container">
+    <div class="text-center reveal">
+      <span class="eyebrow">Aluguel sem risco</span>
+      <h2 class="sec-title">O que garantimos</h2>
+      <p class="sec-lead mx-auto">Sem contrato longo, sem burocracia — e com uma empresa de TI do outro lado.</p>
+    </div>
+
+    <div class="row g-3 g-md-4 mt-2 reveal-group">
+      <div class="col-md-6 col-lg-3"><div class="about-item"><i class="fa-solid fa-circle-check"></i><h3>Equipamento testado</h3><p>Cada Starlink é ligada e verificada antes de sair para o cliente.</p></div></div>
+      <div class="col-md-6 col-lg-3"><div class="about-item"><i class="fa-brands fa-whatsapp"></i><h3>Suporte durante o aluguel</h3><p>Dúvida ou problema? É só chamar no WhatsApp enquanto o equipamento estiver com você.</p></div></div>
+      <div class="col-md-6 col-lg-3"><div class="about-item"><i class="fa-solid fa-file-signature"></i><h3>Sem fidelidade</h3><p>Aluguel por diária, sem contrato longo nem análise de crédito.</p></div></div>
+      <div class="col-md-6 col-lg-3"><div class="about-item"><i class="fa-solid fa-building-shield"></i><h3>Empresa com CNPJ</h3><p>Netcell Informática — CNPJ 61.932.181/0001-89, com nota fiscal.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec sec--alt" id="suporte-ti">
+  <div class="container">
+    <div class="text-center reveal">
+      <span class="eyebrow">Suporte de TI</span>
+      <h2 class="sec-title">Sua empresa (e sua casa) sempre funcionando</h2>
+      <p class="sec-lead mx-auto">Atendimento técnico presencial na região e remoto para todo o Brasil — com planos mensais para empresas e chamado avulso para quem precisa de uma ajuda pontual.</p>
+    </div>
+    <div class="row g-3 g-md-4 mt-2 reveal-group">
+      <div class="col-12 col-sm-6 col-lg-4"><div class="service-card"><span class="svc-ico"><i class="fa-solid fa-location-dot"></i></span><h3>Atendimento presencial</h3><p>Técnico na sua empresa ou casa para instalar, configurar e resolver o que precisar.</p></div></div>
+      <div class="col-12 col-sm-6 col-lg-4"><div class="service-card"><span class="svc-ico"><i class="fa-solid fa-laptop-code"></i></span><h3>Suporte remoto</h3><p>Acesso à distância pelo computador para resolver rápido, sem precisar de deslocamento.</p></div></div>
+      <div class="col-12 col-sm-6 col-lg-4"><div class="service-card"><span class="svc-ico"><i class="fa-solid fa-screwdriver-wrench"></i></span><h3>Manutenção de computadores</h3><p>Preventiva e corretiva em PCs, notebooks e impressoras, com troca de peças e limpeza.</p></div></div>
+      <div class="col-12 col-sm-6 col-lg-4"><div class="service-card"><span class="svc-ico"><i class="fa-solid fa-server"></i></span><h3>Servidores e sistemas</h3><p>Configuração, atualização e acompanhamento de servidores, e-mail e sistemas do dia a dia.</p></div></div>
+      <div class="col-12 col-sm-6 col-lg-4"><div class="service-card"><span class="svc-ico"><i class="fa-solid fa-shield-halved"></i></span><h3>Backup e antivírus</h3><p>Rotina de backup automático e proteção contra vírus e perda de dados.</p></div></div>
+      <div class="col-12 col-sm-6 col-lg-4"><div class="service-card"><span class="svc-ico"><i class="fa-solid fa-calendar-check"></i></span><h3>Plano mensal para empresas</h3><p>Suporte contínuo com valor fixo por mês — a sua TI cuidada sem surpresa na conta.</p></div></div>
+    </div>
+    <div class="text-center mt-4 reveal">
+      <a class="btn-wa btn-xl js-wa" data-msg="Olá! Gostaria de falar sobre suporte de TI com a Netcell Informática." href="https://wa.me/5598985954491"><i class="fa-brands fa-whatsapp"></i> Falar com o suporte</a>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="sites-sistemas">
+  <div class="container">
+    <div class="text-center reveal">
+      <span class="eyebrow">Sites e sistemas</span>
+      <h2 class="sec-title">Site institucional e sistema sob medida pro seu negócio</h2>
+      <p class="sec-lead mx-auto">Do site que apresenta a sua empresa ao sistema que controla clientes, contratos, propostas e o financeiro — feito do jeito que você trabalha.</p>
+    </div>
+    <div class="row g-3 g-md-4 mt-2 reveal-group">
+      <div class="col-12 col-sm-6 col-lg-4"><div class="service-card"><span class="svc-ico"><i class="fa-solid fa-globe"></i></span><h3>Site institucional</h3><p>Página rápida e responsável no celular, com seus serviços, contato e botão de WhatsApp.</p></div></div>
+      <div class="col-12 col-sm-6 col-lg-4"><div class="service-card"><span class="svc-ico"><i class="fa-solid fa-table-columns"></i></span><h3>Sistema de gestão</h3><p>Um painel só pra controlar o que entra e o que sai do seu negócio, acessível de qualquer lugar.</p></div></div>
+      <div class="col-12 col-sm-6 col-lg-4"><div class="service-card"><span class="svc-ico"><i class="fa-solid fa-users"></i></span><h3>Cadastro de clientes</h3><p>Todos os seus clientes organizados, com histórico, contato e endereço.</p></div></div>
+      <div class="col-12 col-sm-6 col-lg-4"><div class="service-card"><span class="svc-ico"><i class="fa-solid fa-file-signature"></i></span><h3>Contratos e propostas</h3><p>Gera contrato e proposta a partir de um modelo, com numeração automática e PDF pra enviar.</p></div></div>
+      <div class="col-12 col-sm-6 col-lg-4"><div class="service-card"><span class="svc-ico"><i class="fa-solid fa-sack-dollar"></i></span><h3>Controle financeiro</h3><p>Contas a receber e a pagar, baixa de pagamento e visão do que está em aberto ou atrasado.</p></div></div>
+      <div class="col-12 col-sm-6 col-lg-4"><div class="service-card"><span class="svc-ico"><i class="fa-solid fa-mobile-screen-button"></i></span><h3>Acesso pelo celular</h3><p>Login por usuário, funciona no navegador do celular e dá pra instalar como app.</p></div></div>
+    </div>
+    <div class="text-center mt-4 reveal">
+      <a class="btn-wa btn-xl js-wa" data-msg="Olá! Gostaria de falar sobre criação de site ou sistema com a Netcell Informática." href="https://wa.me/5598985954491"><i class="fa-brands fa-whatsapp"></i> Falar sobre meu sistema</a>
+    </div>
+  </div>
+</section>
+
+<section class="sec sec--alt" id="redes">
+  <div class="container">
+    <div class="text-center reveal">
+      <span class="eyebrow">Redes de computadores</span>
+      <h2 class="sec-title">Rede rápida, organizada e sem queda</h2>
+      <p class="sec-lead mx-auto">Do cabeamento estruturado ao Wi-Fi corporativo — projeto, instalação, organização e testes, para escritórios, lojas e obras.</p>
+    </div>
+    <div class="row g-3 g-md-4 mt-2 reveal-group">
+      <div class="col-12 col-sm-6 col-lg-4"><div class="service-card"><span class="svc-ico"><i class="fa-solid fa-diagram-project"></i></span><h3>Cabeamento estruturado</h3><p>Cabos de rede e telefonia passados, identificados e testados, prontos pra crescer.</p></div></div>
+      <div class="col-12 col-sm-6 col-lg-4"><div class="service-card"><span class="svc-ico"><i class="fa-solid fa-wifi"></i></span><h3>Wi-Fi corporativo</h3><p>Cobertura sem ponto morto com access points, para vários aparelhos ao mesmo tempo.</p></div></div>
+      <div class="col-12 col-sm-6 col-lg-4"><div class="service-card"><span class="svc-ico"><i class="fa-solid fa-server"></i></span><h3>Racks e organização</h3><p>Rack montado, cabos amarrados e etiquetados — manutenção fácil e nada de fio solto.</p></div></div>
+      <div class="col-12 col-sm-6 col-lg-4"><div class="service-card"><span class="svc-ico"><i class="fa-solid fa-network-wired"></i></span><h3>Switches e roteadores</h3><p>Equipamentos dimensionados e configurados para o tamanho da sua rede.</p></div></div>
+      <div class="col-12 col-sm-6 col-lg-4"><div class="service-card"><span class="svc-ico"><i class="fa-solid fa-ethernet"></i></span><h3>Pontos de dados</h3><p>Novas tomadas de rede onde você precisa, sem gambiarra e sem cabo no chão.</p></div></div>
+      <div class="col-12 col-sm-6 col-lg-4"><div class="service-card"><span class="svc-ico"><i class="fa-solid fa-video"></i></span><h3>Câmeras (CFTV) na rede</h3><p>Câmeras de segurança integradas à mesma infraestrutura, com acesso pelo celular.</p></div></div>
+    </div>
+    <div class="text-center mt-4 reveal">
+      <a class="btn-wa btn-xl js-wa" data-msg="Olá! Gostaria de um orçamento de rede / cabeamento estruturado." href="https://wa.me/5598985954491"><i class="fa-brands fa-whatsapp"></i> Pedir orçamento de rede</a>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="servicos">
+  <div class="container">
+    <div class="text-center reveal">
+      <span class="eyebrow">Soluções em Tecnologia</span>
+      <h2 class="sec-title">Nossos serviços</h2>
+      <p class="sec-lead mx-auto">Da manutenção do computador à infraestrutura de rede da sua empresa — a Netcell Informática cuida da sua tecnologia de ponta a ponta.</p>
+    </div>
+
+    <div class="row g-3 g-md-4 mt-2 reveal-group">
+      <div class="col-12 col-md-6 col-lg-4">
+        <div class="service-card">
+          <span class="svc-ico"><i class="fa-solid fa-headset"></i></span>
+          <h3>Suporte de TI</h3>
+          <p>Atendimento técnico remoto e presencial para manter pessoas e empresas sempre funcionando, com planos mensais para negócios.</p>
+          <a class="svc-link js-wa" data-msg="Olá! Gostaria de um orçamento de Suporte de TI." href="https://wa.me/5598985954491?text=Ol%C3%A1!%20Gostaria%20de%20falar%20com%20a%20Netcell%20Inform%C3%A1tica." target="_blank" rel="noopener">Solicitar orçamento <i class="fa-solid fa-arrow-right-long"></i></a>
+        </div>
+      </div>
+      <div class="col-12 col-md-6 col-lg-4">
+        <div class="service-card">
+          <span class="svc-ico"><i class="fa-solid fa-network-wired"></i></span>
+          <h3>Redes de computadores</h3>
+          <p>Projeto, instalação e configuração de redes cabeadas e Wi-Fi de alta performance, com roteadores, switches e access points.</p>
+          <a class="svc-link js-wa" data-msg="Olá! Gostaria de um orçamento para Redes de computadores." href="https://wa.me/5598985954491?text=Ol%C3%A1!%20Gostaria%20de%20falar%20com%20a%20Netcell%20Inform%C3%A1tica." target="_blank" rel="noopener">Solicitar orçamento <i class="fa-solid fa-arrow-right-long"></i></a>
+        </div>
+      </div>
+      <div class="col-12 col-md-6 col-lg-4">
+        <div class="service-card">
+          <span class="svc-ico"><i class="fa-solid fa-screwdriver-wrench"></i></span>
+          <h3>Manutenção de equipamentos</h3>
+          <p>Manutenção preventiva e corretiva de computadores, notebooks, impressoras e periféricos, com troca de peças e limpeza.</p>
+          <a class="svc-link js-wa" data-msg="Olá! Gostaria de um orçamento de Manutenção de equipamentos." href="https://wa.me/5598985954491?text=Ol%C3%A1!%20Gostaria%20de%20falar%20com%20a%20Netcell%20Inform%C3%A1tica." target="_blank" rel="noopener">Solicitar orçamento <i class="fa-solid fa-arrow-right-long"></i></a>
+        </div>
+      </div>
+      <div class="col-12 col-md-6 col-lg-4">
+        <div class="service-card">
+          <span class="svc-ico"><i class="fa-solid fa-compact-disc"></i></span>
+          <h3>Formatação e sistemas</h3>
+          <p>Formatação, instalação de Windows, Office, drivers, antivírus e programas essenciais, com backup dos seus arquivos.</p>
+          <a class="svc-link js-wa" data-msg="Olá! Gostaria de um orçamento de Formatação e instalação de sistemas." href="https://wa.me/5598985954491?text=Ol%C3%A1!%20Gostaria%20de%20falar%20com%20a%20Netcell%20Inform%C3%A1tica." target="_blank" rel="noopener">Solicitar orçamento <i class="fa-solid fa-arrow-right-long"></i></a>
+        </div>
+      </div>
+      <div class="col-12 col-md-6 col-lg-4">
+        <div class="service-card">
+          <span class="svc-ico"><i class="fa-solid fa-shield-halved"></i></span>
+          <h3>Backup e segurança</h3>
+          <p>Rotinas de backup automático, antivírus e proteção de dados contra perdas, vírus e ataques — na máquina e na nuvem.</p>
+          <a class="svc-link js-wa" data-msg="Olá! Gostaria de um orçamento de Backup e segurança de dados." href="https://wa.me/5598985954491?text=Ol%C3%A1!%20Gostaria%20de%20falar%20com%20a%20Netcell%20Inform%C3%A1tica." target="_blank" rel="noopener">Solicitar orçamento <i class="fa-solid fa-arrow-right-long"></i></a>
+        </div>
+      </div>
+      <div class="col-12 col-md-6 col-lg-4">
+        <div class="service-card">
+          <span class="svc-ico"><i class="fa-solid fa-diagram-project"></i></span>
+          <h3>Cabeamento estruturado</h3>
+          <p>Infraestrutura de cabeamento de rede e telefonia organizada, identificada e testada, para escritórios, lojas e obras.</p>
+          <a class="svc-link js-wa" data-msg="Olá! Gostaria de um orçamento de Cabeamento estruturado." href="https://wa.me/5598985954491?text=Ol%C3%A1!%20Gostaria%20de%20falar%20com%20a%20Netcell%20Inform%C3%A1tica." target="_blank" rel="noopener">Solicitar orçamento <i class="fa-solid fa-arrow-right-long"></i></a>
+        </div>
+      </div>
+      <div class="col-12 col-md-6 col-lg-4">
+        <div class="service-card">
+          <span class="svc-ico"><i class="fa-solid fa-video"></i></span>
+          <h3>Câmeras de segurança (CFTV)</h3>
+          <p>Instalação e configuração de câmeras de monitoramento com gravação e acesso remoto ao vivo pelo celular.</p>
+          <a class="svc-link js-wa" data-msg="Olá! Gostaria de um orçamento de Câmeras de segurança (CFTV)." href="https://wa.me/5598985954491?text=Ol%C3%A1!%20Gostaria%20de%20falar%20com%20a%20Netcell%20Inform%C3%A1tica." target="_blank" rel="noopener">Solicitar orçamento <i class="fa-solid fa-arrow-right-long"></i></a>
+        </div>
+      </div>
+      <div class="col-12 col-md-6 col-lg-4">
+        <div class="service-card">
+          <span class="svc-ico"><i class="fa-solid fa-cart-shopping"></i></span>
+          <h3>Venda de equipamentos</h3>
+          <p>Computadores, notebooks, periféricos, cabos e acessórios com procedência, nota fiscal e garantia.</p>
+          <a class="svc-link js-wa" data-msg="Olá! Gostaria de saber sobre Venda de equipamentos de informática." href="https://wa.me/5598985954491?text=Ol%C3%A1!%20Gostaria%20de%20falar%20com%20a%20Netcell%20Inform%C3%A1tica." target="_blank" rel="noopener">Falar com a loja <i class="fa-solid fa-arrow-right-long"></i></a>
+        </div>
+      </div>
+      <div class="col-12 col-md-6 col-lg-4">
+        <div class="service-card">
+          <span class="svc-ico"><i class="fa-solid fa-satellite-dish"></i></span>
+          <h3>Internet Starlink</h3>
+          <p>Aluguel e instalação de internet via satélite Starlink para qualquer lugar do Brasil, a partir de R$ 50,00 por dia.</p>
+          <a class="svc-link" href="#starlink">Ver detalhes <i class="fa-solid fa-arrow-right-long"></i></a>
+        </div>
+      </div>
+    </div>
+
+    <div class="text-center mt-4 reveal">
+      <a class="btn-wa btn-xl js-wa" data-msg="Olá! Gostaria de falar com a Netcell Informática sobre serviços de TI." href="https://wa.me/5598985954491?text=Ol%C3%A1!%20Gostaria%20de%20falar%20com%20a%20Netcell%20Inform%C3%A1tica." target="_blank" rel="noopener">
+        <i class="fa-brands fa-whatsapp"></i> Solicitar orçamento
+      </a>
+    </div>
+  </div>
+</section>
+
 <section class="sec" id="como-funciona">
   <div class="container">
     <div class="text-center reveal">
@@ -1053,43 +1096,6 @@
   </div>
 </section>
 
-<!-- ================= PREÇO ================= -->
-<section class="price-block" id="preco">
-  <div class="container pb-inner reveal">
-    <span class="pb-tag">Promoção · 50% de desconto</span>
-    <div class="pb-label">Aluguel</div>
-    <div class="pb-old">R$ 100,00</div>
-    <div class="pb-price">R$ 50,00</div>
-    <div class="pb-per">por dia</div>
-    <div class="pb-note">Consulte disponibilidade.</div>
-    <a class="btn-dark-wa js-wa" href="https://wa.me/5598985954491?text=Ol%C3%A1!%20Gostaria%20de%20reservar%20uma%20Starlink" target="_blank" rel="noopener">
-      <i class="fa-brands fa-whatsapp"></i> Solicitar disponibilidade
-    </a>
-  </div>
-</section>
-
-<!-- ================= VANTAGENS ================= -->
-<section class="sec sec--alt" id="vantagens">
-  <div class="container">
-    <div class="text-center reveal">
-      <span class="eyebrow">Vantagens</span>
-      <h2 class="sec-title">Tudo o que você ganha ao alugar</h2>
-    </div>
-
-    <div class="row g-3 mt-2 reveal-group">
-      <div class="col-md-6 col-lg-3"><div class="adv-item"><span class="adv-check"><i class="fa-solid fa-infinity"></i></span><span>Internet ilimitada</span></div></div>
-      <div class="col-md-6 col-lg-3"><div class="adv-item"><span class="adv-check"><i class="fa-solid fa-check"></i></span><span>Alta velocidade</span></div></div>
-      <div class="col-md-6 col-lg-3"><div class="adv-item"><span class="adv-check"><i class="fa-solid fa-check"></i></span><span>Sem burocracia</span></div></div>
-      <div class="col-md-6 col-lg-3"><div class="adv-item"><span class="adv-check"><i class="fa-solid fa-check"></i></span><span>Fácil transporte</span></div></div>
-      <div class="col-md-6 col-lg-3"><div class="adv-item"><span class="adv-check"><i class="fa-solid fa-check"></i></span><span>Instalação simples</span></div></div>
-      <div class="col-md-6 col-lg-3"><div class="adv-item"><span class="adv-check"><i class="fa-solid fa-check"></i></span><span>Cobertura nacional</span></div></div>
-      <div class="col-md-6 col-lg-3"><div class="adv-item"><span class="adv-check"><i class="fa-solid fa-check"></i></span><span>Funciona mesmo em locais isolados</span></div></div>
-      <div class="col-md-6 col-lg-3"><div class="adv-item"><span class="adv-check"><i class="fa-solid fa-check"></i></span><span>Ideal para trabalho e lazer</span></div></div>
-    </div>
-  </div>
-</section>
-
-<!-- ================= SOBRE ================= -->
 <section class="sec" id="sobre">
   <div class="container">
     <div class="row g-5 align-items-center">
@@ -1114,25 +1120,6 @@
   </div>
 </section>
 
-<!-- ================= GARANTIAS ================= -->
-<section class="sec sec--alt" id="garantias">
-  <div class="container">
-    <div class="text-center reveal">
-      <span class="eyebrow">Aluguel sem risco</span>
-      <h2 class="sec-title">O que garantimos</h2>
-      <p class="sec-lead mx-auto">Sem contrato longo, sem burocracia — e com uma empresa de TI do outro lado.</p>
-    </div>
-
-    <div class="row g-3 g-md-4 mt-2 reveal-group">
-      <div class="col-md-6 col-lg-3"><div class="about-item"><i class="fa-solid fa-circle-check"></i><h3>Equipamento testado</h3><p>Cada Starlink é ligada e verificada antes de sair para o cliente.</p></div></div>
-      <div class="col-md-6 col-lg-3"><div class="about-item"><i class="fa-brands fa-whatsapp"></i><h3>Suporte durante o aluguel</h3><p>Dúvida ou problema? É só chamar no WhatsApp enquanto o equipamento estiver com você.</p></div></div>
-      <div class="col-md-6 col-lg-3"><div class="about-item"><i class="fa-solid fa-file-signature"></i><h3>Sem fidelidade</h3><p>Aluguel por diária, sem contrato longo nem análise de crédito.</p></div></div>
-      <div class="col-md-6 col-lg-3"><div class="about-item"><i class="fa-solid fa-building-shield"></i><h3>Empresa com CNPJ</h3><p>Netcell Informática — CNPJ 61.932.181/0001-89, com nota fiscal.</p></div></div>
-    </div>
-  </div>
-</section>
-
-<!-- ================= CTA BAND ================= -->
 <section class="cta-band">
   <div class="container reveal">
     <h2>Fale com a Netcell Informática</h2>
