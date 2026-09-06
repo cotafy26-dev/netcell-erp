@@ -14,6 +14,7 @@ import { Contratos, ContratoForm, ContratoView, ContratoEdit } from '@/pages/adm
 import { Propostas, PropostaForm, PropostaView, PropostaEdit } from '@/pages/admin/Propostas';
 import { Usuarios, UsuarioForm, UsuarioEdit } from '@/pages/admin/Usuarios';
 import { Financeiro, FinanceiroForm, FinanceiroView } from '@/pages/admin/Financeiro';
+import { SiteVendas } from '@/pages/admin/SiteVendas';
 
 /**
  * Roteamento por hash (#/login, #/admin/...) — igual em espírito ao gtic:
@@ -71,6 +72,7 @@ export default function App() {
                 <Route path="financeiro" element={<Financeiro />} />
                 <Route path="financeiro/novo" element={<FinanceiroForm />} />
                 <Route path="financeiro/:id" element={<FinanceiroView />} />
+                <Route path="site" element={<SiteVendas />} />
               </Route>
             </Route>
 

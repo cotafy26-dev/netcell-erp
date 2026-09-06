@@ -19,6 +19,7 @@ export interface ModuleDef {
 export const ERP_MODULES: ModuleDef[] = [
   { key: 'dashboard', label: 'Dashboard', path: '/admin', icon: 'LayoutDashboard', resource: 'dashboard', group: 'Gestão' },
   { key: 'users', label: 'Usuários', path: '/admin/usuarios', icon: 'UserCog', resource: 'users', group: 'Gestão' },
+  { key: 'site', label: 'Página de Vendas', path: '/admin/site', icon: 'Megaphone', resource: 'settings', group: 'Gestão' },
 
   { key: 'customers', label: 'Clientes', path: '/admin/clientes', icon: 'Users', resource: 'customers', group: 'Comercial' },
   { key: 'proposals', label: 'Proposta Comercial', path: '/admin/propostas', icon: 'FileText', resource: 'contracts', group: 'Comercial' },

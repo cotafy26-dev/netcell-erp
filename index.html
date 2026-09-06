@@ -470,6 +470,15 @@
   /* ============ barra rotativa de avisos ============ */
   html,body{overflow-x:clip}
   :root{ --topbar-h:34px }
+
+  /* logo real no lugar do texto */
+  .brand-img{height:46px;width:auto;background:#fff;border-radius:10px;padding:5px 10px;display:block}
+  .site-footer .brand-img{height:52px}
+
+  /* slide com imagem de fundo (vindo do admin) */
+  .rot-slide.rot-img{background-size:cover;background-position:center}
+  .rot-slide.rot-img::before{background:linear-gradient(90deg,rgba(0,0,0,.85),rgba(0,0,0,.55) 55%,rgba(0,0,0,.25))}
+  .rot-slide.rot-img .rot-ic{display:none}
   .topbar{
     position:fixed;top:0;left:0;right:0;z-index:1032;height:var(--topbar-h);
     background:linear-gradient(90deg,var(--red),#a30000);
@@ -545,8 +554,7 @@
   <nav class="navbar navbar-expand-lg py-2">
     <div class="container">
       <a class="brand" href="#top" aria-label="Netcell Informática - início">
-        <span class="brand-mark"><i class="fa-solid fa-microchip"></i></span>
-        <span class="brand-logo"><span class="brand-text">NETCELL</span><span class="brand-sub">INFORMÁTICA</span></span>
+        <img src="/logo-netcell.png" alt="Netcell Informática" class="brand-img">
       </a>
       <button class="navbar-toggler text-white" type="button" data-bs-toggle="collapse" data-bs-target="#menu" aria-controls="menu" aria-expanded="false" aria-label="Abrir menu">
         <i class="fa-solid fa-bars"></i>
@@ -1059,8 +1067,7 @@
     <div class="row g-4">
       <div class="col-lg-4">
         <a class="brand mb-3" href="#top">
-          <span class="brand-mark"><i class="fa-solid fa-microchip"></i></span>
-          <span class="brand-logo"><span class="brand-text">NETCELL</span><span class="brand-sub">INFORMÁTICA</span></span>
+          <img src="/logo-netcell.png" alt="Netcell Informática" class="brand-img">
         </a>
         <p class="text-white-50 mb-0">Suporte de TI, redes de computadores, manutenção de equipamentos, CFTV e aluguel de internet Starlink.<br>Atendimento rápido. Cobertura em todo o Brasil.</p>
       </div>
@@ -1159,33 +1166,52 @@
   })();
 </script>
 <script>
-  /* ---- banner rotativo de destaques ---- */
+  /* ---- banner rotativo + barra de avisos ---- */
   (function(){
+    var WA = "5598985954491";
+    function wireWa(scope){
+      (scope || document).querySelectorAll("a.js-wa").forEach(function(a){
+        if (a.getAttribute("data-wa-done")) return;
+        var msg = a.getAttribute("data-msg") || "Olá! Gostaria de falar com a Netcell Informática.";
+        a.setAttribute("href", "https://wa.me/" + WA + "?text=" + encodeURIComponent(msg));
+        a.setAttribute("target", "_blank"); a.setAttribute("rel", "noopener");
+        a.setAttribute("data-wa-done", "1");
+      });
+    }
+    function esc(s){ return String(s == null ? "" : s).replace(/[&<>"]/g, function(c){ return ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;" })[c]; }); }
+
+    var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     var track = document.getElementById("rotTrack");
-    if (track){
-      var slides = track.children, total = slides.length, i = 0, timer = null;
-      var dotsBox = document.getElementById("rotDots");
-      var reduceM = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    var banner = document.getElementById("banner");
+    var dotsBox = document.getElementById("rotDots");
+    var i = 0, timer = null, total = 0;
+
+    function stop(){ if (timer){ clearInterval(timer); timer = null; } }
+    function start(){ if (!reduce && !timer && total > 1) timer = setInterval(function(){ go(i + 1); }, 5500); }
+    function rst(){ stop(); start(); }
+    function go(n){
+      if (!total) return;
+      i = (n % total + total) % total;
+      track.style.transform = "translateX(-" + (i * 100) + "%)";
+      var dd = dotsBox.children;
+      for (var k = 0; k < dd.length; k++) dd[k].classList.toggle("on", k === i);
+    }
+    function initRotator(){
+      total = track.children.length; i = 0;
+      dotsBox.innerHTML = "";
       for (var d = 0; d < total; d++){
         var b = document.createElement("button");
         b.setAttribute("aria-label", "Ir para o destaque " + (d + 1));
-        (function(n){ b.addEventListener("click", function(){ go(n); rst(); }); })(d);
+        (function(n){ b.onclick = function(){ go(n); rst(); }; })(d);
         dotsBox.appendChild(b);
       }
-      var dots = dotsBox.children;
-      function go(n){
-        i = (n + total) % total;
-        track.style.transform = "translateX(-" + (i * 100) + "%)";
-        for (var k = 0; k < total; k++) dots[k].classList.toggle("on", k === i);
-      }
-      function nx(){ go(i + 1); }
-      function pv(){ go(i - 1); }
-      function start(){ if (!reduceM && !timer) timer = setInterval(nx, 5500); }
-      function stop(){ if (timer){ clearInterval(timer); timer = null; } }
-      function rst(){ stop(); start(); }
-      document.getElementById("rotNext").addEventListener("click", function(){ nx(); rst(); });
-      document.getElementById("rotPrev").addEventListener("click", function(){ pv(); rst(); });
-      var banner = document.getElementById("banner");
+      wireWa(track);
+      go(0); rst();
+    }
+
+    if (track && banner){
+      document.getElementById("rotNext").onclick = function(){ go(i + 1); rst(); };
+      document.getElementById("rotPrev").onclick = function(){ go(i - 1); rst(); };
       banner.addEventListener("mouseenter", stop);
       banner.addEventListener("mouseleave", start);
       var x0 = null;
@@ -1193,23 +1219,43 @@
       banner.addEventListener("touchend", function(e){
         if (x0 === null) return;
         var dx = e.changedTouches[0].clientX - x0;
-        if (Math.abs(dx) > 40){ dx < 0 ? nx() : pv(); rst(); }
+        if (Math.abs(dx) > 40){ go(i + (dx < 0 ? 1 : -1)); rst(); }
         x0 = null;
       });
-      go(0); start();
+      initRotator();
+
+      /* banners gerenciados no admin (menu "Página de Vendas") */
+      var SB = "https://sgpugulpyytjgbsrymmi.supabase.co";
+      var KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNncHVndWxweXl0amdic3J5bW1pIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg0NzkyMjUsImV4cCI6MjEwNDA1NTIyNX0.AmT2M4z8AG8xST_eS-LTSNySi3cAV_cjeUS2zigs_kE";
+      fetch(SB + "/rest/v1/SiteBanner?active=eq.true&order=order.asc&select=title,subtitle,body,imageUrl,ctaLabel,ctaMsg", {
+        headers: { apikey: KEY, Authorization: "Bearer " + KEY }
+      }).then(function(r){ return r.ok ? r.json() : []; }).then(function(rows){
+        if (!Array.isArray(rows) || !rows.length) return; /* mantém os slides padrão do HTML */
+        track.innerHTML = rows.map(function(b){
+          var hasImg = !!b.imageUrl;
+          var cls = "rot-slide" + (hasImg ? " rot-img" : "");
+          var st = hasImg ? " style=\"background-image:url('" + String(b.imageUrl).replace(/["'<>]/g, "") + "')\"" : "";
+          return '<div class="' + cls + '"' + st + '>'
+            + (b.subtitle ? '<span class="r-eyebrow">' + esc(b.subtitle) + '</span>' : '')
+            + '<h2>' + esc(b.title) + '</h2>'
+            + (b.body ? '<p>' + esc(b.body) + '</p>' : '')
+            + (b.ctaLabel ? '<div class="r-cta"><a class="btn-wa js-wa" data-msg="' + esc(b.ctaMsg) + '" href="#"><i class="fa-brands fa-whatsapp"></i> ' + esc(b.ctaLabel) + '</a></div>' : '')
+            + '</div>';
+        }).join("");
+        initRotator();
+      }).catch(function(){});
     }
 
-    /* ---- barra de avisos rotativa ---- */
+    /* barra de avisos rotativa */
     var tr = document.getElementById("tbTrack");
     if (tr){
       var msgs = tr.children, tot = msgs.length, j = 0, t2 = null;
-      var reduceT = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-      function set(n){ j = (n + tot) % tot; for (var k = 0; k < tot; k++) msgs[k].classList.toggle("on", k === j); }
-      function tstart(){ if (!reduceT && !t2) t2 = setInterval(function(){ set(j + 1); }, 4200); }
-      function trst(){ if (t2){ clearInterval(t2); t2 = null; } tstart(); }
-      document.getElementById("tbNext").addEventListener("click", function(){ set(j + 1); trst(); });
-      document.getElementById("tbPrev").addEventListener("click", function(){ set(j - 1); trst(); });
-      set(0); tstart();
+      var setMsg = function(n){ j = (n % tot + tot) % tot; for (var k = 0; k < tot; k++) msgs[k].classList.toggle("on", k === j); };
+      var tstart = function(){ if (!reduce && !t2 && tot > 1) t2 = setInterval(function(){ setMsg(j + 1); }, 4200); };
+      var trst = function(){ if (t2){ clearInterval(t2); t2 = null; } tstart(); };
+      document.getElementById("tbNext").onclick = function(){ setMsg(j + 1); trst(); };
+      document.getElementById("tbPrev").onclick = function(){ setMsg(j - 1); trst(); };
+      setMsg(0); tstart();
     }
   })();
 </script>
