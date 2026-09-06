@@ -165,22 +165,93 @@ function BannerCard({ data, onChanged }: { data: Banner; onChanged: () => void }
   );
 }
 
+type Section = {
+  key: string;
+  label: string;
+  eyebrow: string;
+  title: string;
+  lead: string;
+  visible: boolean;
+  order: number;
+};
+
+function SectionCard({ data, onChanged }: { data: Section; onChanged: () => void }) {
+  const [s, setS] = useState<Section>(data);
+  const [busy, setBusy] = useState(false);
+  const [msg, setMsg] = useState<string | null>(null);
+  const set = <K extends keyof Section>(k: K, v: Section[K]) => setS((x) => ({ ...x, [k]: v }));
+
+  async function salvar() {
+    setBusy(true);
+    setMsg(null);
+    try {
+      const { error } = await supabase
+        .from('SiteSection')
+        .update({ eyebrow: s.eyebrow, title: s.title, lead: s.lead, visible: s.visible })
+        .eq('key', s.key);
+      if (error) throw new Error(error.message);
+      setMsg('Salvo.');
+      onChanged();
+    } catch (e) {
+      setMsg((e as Error).message);
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  return (
+    <Card className={s.visible ? '' : 'opacity-60'}>
+      <CardHeader className="flex-row items-center justify-between gap-3 space-y-0">
+        <CardTitle className="text-sm">{s.label}</CardTitle>
+        <label className="flex items-center gap-2 text-sm">
+          <input type="checkbox" className="size-4" checked={s.visible} onChange={(e) => set('visible', e.target.checked)} />
+          Mostrar no site
+        </label>
+      </CardHeader>
+      <CardContent className="space-y-3">
+        <div className="grid gap-3 sm:grid-cols-2">
+          <div className="flex flex-col gap-1.5">
+            <label className="text-sm font-medium">Rótulo pequeno (linha de cima)</label>
+            <Input value={s.eyebrow} onChange={(e) => set('eyebrow', e.target.value)} />
+          </div>
+          <div className="flex flex-col gap-1.5">
+            <label className="text-sm font-medium">Título</label>
+            <Input value={s.title} onChange={(e) => set('title', e.target.value)} />
+          </div>
+        </div>
+        <div className="flex flex-col gap-1.5">
+          <label className="text-sm font-medium">Texto</label>
+          <Textarea value={s.lead} onChange={(e) => set('lead', e.target.value)} rows={2} />
+        </div>
+        <div className="flex flex-wrap items-center gap-2">
+          <Button size="sm" onClick={salvar} loading={busy}>
+            Salvar
+          </Button>
+          {msg && <span className="text-sm text-muted-foreground">{msg}</span>}
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
+
 export function SiteVendas() {
   const [banners, setBanners] = useState<Banner[]>([]);
+  const [sections, setSections] = useState<Section[]>([]);
   const [loading, setLoading] = useState(true);
   const [err, setErr] = useState<string | null>(null);
 
   const load = useCallback(() => {
     setLoading(true);
-    supabase
-      .from('SiteBanner')
-      .select('*')
-      .order('order', { ascending: true })
-      .then(({ data, error }) => {
-        if (error) setErr(error.message);
-        setBanners((data as Banner[]) ?? []);
-        setLoading(false);
-      });
+    Promise.all([
+      supabase.from('SiteBanner').select('*').order('order', { ascending: true }),
+      supabase.from('SiteSection').select('*').order('order', { ascending: true }),
+    ]).then(([b, s]) => {
+      if (b.error) setErr(b.error.message);
+      if (s.error) setErr(s.error.message);
+      setBanners((b.data as Banner[]) ?? []);
+      setSections((s.data as Section[]) ?? []);
+      setLoading(false);
+    });
   }, []);
   useEffect(load, [load]);
 
@@ -191,29 +262,44 @@ export function SiteVendas() {
   }
 
   return (
-    <div className="space-y-5">
-      <PageHeader
-        title="Página de Vendas"
-        subtitle="Banners que aparecem girando no topo do site (netcellinformatica.com.br)"
-      />
-      <p className="text-sm text-muted-foreground">
-        Edite os banners aqui e clique em <b>Salvar</b>. As alterações aparecem no site em poucos minutos (pode ser
-        preciso atualizar a página com o cache limpo).
-      </p>
+    <div className="space-y-8">
+      <div className="space-y-5">
+        <PageHeader
+          title="Página de Vendas"
+          subtitle="Edite o que aparece no site netcellinformatica.com.br"
+        />
+        <p className="text-sm text-muted-foreground">
+          Altere aqui e clique em <b>Salvar</b>. As mudanças aparecem no site em poucos minutos (às vezes é preciso
+          atualizar a página com o cache limpo).
+        </p>
+        {err && <p className="text-sm text-accent">{err}</p>}
+      </div>
 
-      {err && <p className="text-sm text-accent">{err}</p>}
       {loading ? (
         <Spinner />
       ) : (
-        <div className="space-y-4">
-          {banners.map((b) => (
-            <BannerCard key={b.id} data={b} onChanged={load} />
-          ))}
-          {banners.length === 0 && <p className="text-sm text-muted-foreground">Nenhum banner cadastrado.</p>}
-          <Button variant="outline" onClick={novoBanner}>
-            + Adicionar banner
-          </Button>
-        </div>
+        <>
+          <section className="space-y-4">
+            <h2 className="text-lg font-semibold">Banners do topo (girando)</h2>
+            {banners.map((b) => (
+              <BannerCard key={b.id} data={b} onChanged={load} />
+            ))}
+            {banners.length === 0 && <p className="text-sm text-muted-foreground">Nenhum banner cadastrado.</p>}
+            <Button variant="outline" onClick={novoBanner}>
+              + Adicionar banner
+            </Button>
+          </section>
+
+          <section className="space-y-4">
+            <h2 className="text-lg font-semibold">Blocos do site — textos e o que mostrar</h2>
+            <p className="text-sm text-muted-foreground">
+              Cada bloco é uma parte da página. Desmarque <b>“Mostrar no site”</b> para esconder o bloco (e o item dele no menu).
+            </p>
+            {sections.map((s) => (
+              <SectionCard key={s.key} data={s} onChanged={load} />
+            ))}
+          </section>
+        </>
       )}
     </div>
   );

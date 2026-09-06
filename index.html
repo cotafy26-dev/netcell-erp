@@ -1248,6 +1248,8 @@
       });
     }
     function esc(s){ return String(s == null ? "" : s).replace(/[&<>"]/g, function(c){ return ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;" })[c]; }); }
+    var SB = "https://sgpugulpyytjgbsrymmi.supabase.co";
+    var KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNncHVndWxweXl0amdic3J5bW1pIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg0NzkyMjUsImV4cCI6MjEwNDA1NTIyNX0.AmT2M4z8AG8xST_eS-LTSNySi3cAV_cjeUS2zigs_kE";
 
     var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     var track = document.getElementById("rotTrack");
@@ -1294,8 +1296,6 @@
       initRotator();
 
       /* banners gerenciados no admin (menu "Página de Vendas") */
-      var SB = "https://sgpugulpyytjgbsrymmi.supabase.co";
-      var KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNncHVndWxweXl0amdic3J5bW1pIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg0NzkyMjUsImV4cCI6MjEwNDA1NTIyNX0.AmT2M4z8AG8xST_eS-LTSNySi3cAV_cjeUS2zigs_kE";
       fetch(SB + "/rest/v1/SiteBanner?active=eq.true&order=order.asc&select=title,subtitle,body,imageUrl,ctaLabel,ctaMsg", {
         headers: { apikey: KEY, Authorization: "Bearer " + KEY }
       }).then(function(r){ return r.ok ? r.json() : []; }).then(function(rows){
@@ -1314,6 +1314,37 @@
         initRotator();
       }).catch(function(){});
     }
+
+    /* textos e visibilidade das seções — editáveis no admin ("Página de Vendas") */
+    function fmtTitle(t){
+      return esc(t).replace(/\*\*([^*]+)\*\*/g, '<span class="accent">$1</span>');
+    }
+    fetch(SB + "/rest/v1/SiteSection?select=key,eyebrow,title,lead,visible", {
+      headers: { apikey: KEY, Authorization: "Bearer " + KEY }
+    }).then(function(r){ return r.ok ? r.json() : []; }).then(function(rows){
+      if (!Array.isArray(rows)) return;
+      rows.forEach(function(s){
+        var el = document.getElementById(s.key);
+        if (!el) return;
+        var navLink = document.querySelector('#menu a[href="#' + s.key + '"]');
+        if (s.visible === false){
+          el.style.display = "none";
+          if (navLink && navLink.parentElement) navLink.parentElement.style.display = "none";
+          return;
+        }
+        var eye = el.querySelector(".eyebrow") || el.querySelector(".hero-badge");
+        var ttl = el.querySelector(".sec-title") || el.querySelector("h1");
+        var led = el.querySelector(".sec-lead") || el.querySelector(".hero-sub");
+        if (eye && s.eyebrow) {
+          var ic = eye.querySelector("i");
+          eye.textContent = "";
+          if (ic) { eye.appendChild(ic); eye.appendChild(document.createTextNode(" ")); }
+          eye.appendChild(document.createTextNode(s.eyebrow));
+        }
+        if (ttl && s.title) ttl.innerHTML = fmtTitle(s.title);
+        if (led && s.lead) led.textContent = s.lead;
+      });
+    }).catch(function(){});
 
     /* barra de avisos rotativa */
     var tr = document.getElementById("tbTrack");
