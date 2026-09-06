@@ -496,15 +496,21 @@
   .rot{margin-top:calc(var(--topbar-h) + 64px);position:relative;background:var(--ink-1);overflow:hidden}
   .rot-viewport{overflow:hidden}
   .rot-track{display:flex;transition:transform .6s cubic-bezier(.4,.1,.2,1)}
-  .rot-slide{
-    min-width:100%;position:relative;
+  .rot-slide{min-width:100%;position:relative}
+  .rot-inner{
+    position:relative;z-index:2;
     min-height:clamp(340px,42vw,470px);
     display:grid;align-content:center;gap:.55rem;
     padding:clamp(1.8rem,7vw,4.4rem) clamp(1.4rem,9vw,6.5rem);
     padding-bottom:calc(clamp(1.8rem,7vw,4.4rem) + 4.2rem);
   }
   .rot-slide::before{content:"";position:absolute;inset:0;z-index:0;background:radial-gradient(680px 460px at 12% 18%,rgba(255,212,0,.14),transparent 60%),linear-gradient(120deg,#0a0a0a,#161616)}
-  .rot-slide>*{position:relative;z-index:2}
+  .rot-slide>*{z-index:2}
+  /* slide com imagem: mostra a imagem inteira (proporção 1600x600), sem cortar */
+  .rot-slide.rot-img{background-size:cover;background-position:center;background-repeat:no-repeat;aspect-ratio:1600/600;background-color:#0a0a0a}
+  .rot-slide.rot-img .rot-inner{position:absolute;inset:0;min-height:0}
+  .rot-slide.rot-img::before{display:none}
+  .rot-slide.rot-img.has-text::before{display:block;background:linear-gradient(90deg,rgba(0,0,0,.58),rgba(0,0,0,.12) 55%,transparent)}
   .rot-ic{position:absolute;right:clamp(-24px,2vw,48px);top:50%;transform:translateY(-50%);font-size:clamp(9rem,27vw,19rem);color:rgba(255,255,255,.06);z-index:1}
   .rs1::before{background:radial-gradient(680px 460px at 12% 18%,rgba(255,212,0,.20),transparent 60%),linear-gradient(120deg,#0a0a0a,#171717)}
   .rs2::before{background:radial-gradient(680px 460px at 12% 18%,rgba(227,0,0,.26),transparent 60%),linear-gradient(120deg,#140404,#171717)}
@@ -587,6 +593,7 @@
     <div class="rot-track" id="rotTrack">
 
       <div class="rot-slide rs1">
+        <div class="rot-inner">
         <i class="fa-solid fa-satellite-dish rot-ic" aria-hidden="true"></i>
         <span class="r-eyebrow">Internet via satélite</span>
         <h2>Starlink <span class="y">onde você precisar</span></h2>
@@ -594,9 +601,11 @@
         <div class="r-cta">
           <a class="btn-wa js-wa" data-msg="Olá! Gostaria de alugar uma Starlink com a Netcell Informática." href="https://wa.me/5598985954491"><i class="fa-brands fa-whatsapp"></i> Reservar Starlink</a>
         </div>
+        </div>
       </div>
 
       <div class="rot-slide rs2">
+        <div class="rot-inner">
         <i class="fa-solid fa-screwdriver-wrench rot-ic" aria-hidden="true"></i>
         <span class="r-eyebrow">Suporte de TI</span>
         <h2>Sua TI <span class="y">sempre funcionando</span></h2>
@@ -604,9 +613,11 @@
         <div class="r-cta">
           <a class="btn-wa js-wa" data-msg="Olá! Gostaria de um orçamento de suporte de TI." href="https://wa.me/5598985954491"><i class="fa-brands fa-whatsapp"></i> Falar sobre Suporte</a>
         </div>
+        </div>
       </div>
 
       <div class="rot-slide rs3">
+        <div class="rot-inner">
         <i class="fa-solid fa-network-wired rot-ic" aria-hidden="true"></i>
         <span class="r-eyebrow">Redes</span>
         <h2>Cabeamento <span class="y">estruturado</span></h2>
@@ -614,15 +625,18 @@
         <div class="r-cta">
           <a class="btn-wa js-wa" data-msg="Olá! Gostaria de um orçamento de cabeamento estruturado." href="https://wa.me/5598985954491"><i class="fa-brands fa-whatsapp"></i> Falar sobre Cabeamento</a>
         </div>
+        </div>
       </div>
 
       <div class="rot-slide rs4">
+        <div class="rot-inner">
         <i class="fa-solid fa-code rot-ic" aria-hidden="true"></i>
         <span class="r-eyebrow">Software</span>
         <h2>Sites e sistemas <span class="y">sob medida</span></h2>
         <p>Do site institucional ao sistema completo — cadastro de clientes, contratos, propostas, equipamentos e financeiro, do seu jeito.</p>
         <div class="r-cta">
           <a class="btn-wa js-wa" data-msg="Olá! Gostaria de falar sobre criação de site ou sistema." href="https://wa.me/5598985954491"><i class="fa-brands fa-whatsapp"></i> Falar sobre Sistemas</a>
+        </div>
         </div>
       </div>
 
@@ -1303,13 +1317,16 @@
         if (!Array.isArray(rows) || !rows.length) return; /* mantém os slides padrão do HTML */
         track.innerHTML = rows.map(function(b, idx){
           var hasImg = !!b.imageUrl;
-          var cls = "rot-slide rs" + ((idx % 4) + 1) + (hasImg ? " rot-img" : "");
+          var hasText = !!(b.subtitle || b.title || b.body);
+          var cls = "rot-slide rs" + ((idx % 4) + 1) + (hasImg ? " rot-img" : "") + (hasImg && hasText ? " has-text" : "");
           var st = hasImg ? " style=\"background-image:url('" + String(b.imageUrl).replace(/["'<>]/g, "") + "')\"" : "";
           return '<div class="' + cls + '"' + st + '>'
+            + '<div class="rot-inner">'
             + (b.subtitle ? '<span class="r-eyebrow">' + esc(b.subtitle) + '</span>' : '')
             + (b.title ? '<h2>' + esc(b.title) + '</h2>' : '')
             + (b.body ? '<p>' + esc(b.body) + '</p>' : '')
             + (b.ctaLabel ? '<div class="r-cta"><a class="btn-wa js-wa" data-msg="' + esc(b.ctaMsg) + '" href="#"><i class="fa-brands fa-whatsapp"></i> ' + esc(b.ctaLabel) + '</a></div>' : '')
+            + '</div>'
             + '</div>';
         }).join("");
         initRotator();
